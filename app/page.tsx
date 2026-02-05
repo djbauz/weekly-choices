@@ -14,7 +14,12 @@ export default function Home() {
 
   const login = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    alert(error ? error.message : "Login ok")
+
+    if(error){
+      alert(error.message)
+    } else {
+      location.href = "/dashboard"
+    }
   }
 
   return (
