@@ -24,7 +24,7 @@ export default function Home() {
 
   return (
     <div style={{padding:40}}>
-      <h1>Weekly Choices</h1>
+      <h1>ULTIMO UOMO CHALLENGE</h1>
 
       <input placeholder="email" onChange={e=>setEmail(e.target.value)} />
       <br/>
