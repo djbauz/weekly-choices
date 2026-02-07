@@ -41,8 +41,8 @@ export default function Admin(){
   async function load(){
     const { data } = await supabase
       .from("profiles")
-      .select("*")
-      .eq("approved", false)
+      .select("id,email,approved,game_active,is_admin")
+      .order("email")
 
     setUsers(data || [])
   }
@@ -60,10 +60,12 @@ export default function Admin(){
 
   if(loading) return <p>Loading...</p>
 
+  const active = users.filter(u => u.approved && u.game_active)
+  const eliminated = users.filter(u => u.approved && !u.game_active)
+
   return (
     <div style={{padding:40}}>
       <h1>Admin Panel</h1>
-
       {/* NAV ADMIN */}
       <div style={{marginBottom:30}}>
         <Link href="/admin/weeks">Settimane</Link>{" | "}
@@ -71,18 +73,17 @@ export default function Admin(){
         <Link href="/admin/winners">Vincitori</Link>
       </div>
 
-      <h2>Utenti da approvare</h2>
-
-      {users.map(u=>(
-        <div key={u.id} style={{marginBottom:10}}>
-          {u.email}
-          <button onClick={()=>approve(u.id)}>
-            Approva
-          </button>
-        </div>
+      <h2 style={{marginTop:30}} >🟢 In gara</h2>
+      {active.map(u=>(
+        <div key={u.id}>{u.email}</div>
       ))}
 
-      {users.length===0 && <p>Nessun utente in attesa</p>}
+      <h2 style={{marginTop:30}}>🔴 Eliminati</h2>
+      {eliminated.map(u=>(
+        <div key={u.id}>{u.email}</div>
+      ))}
+
+
     </div>
   )
 }

@@ -31,7 +31,7 @@ export default function Home() {
       <input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
       <br/>
 
-      <button onClick={login}>Login</button>
+      <button onClick={login}>Login</button>&nbsp;&nbsp;&nbsp;
       <button onClick={signup}>Signup</button>
     </div>
   )

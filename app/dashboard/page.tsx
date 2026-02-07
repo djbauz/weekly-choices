@@ -12,6 +12,11 @@ export default function Dashboard() {
   const [options,setOptions] = useState<any[]>([])
   const [message,setMessage] = useState("")
   const [lastResult,setLastResult] = useState<any>(null)
+  const [resultStatus, setResultStatus] = useState<
+    "attesa" | "passato" | "eliminato" | null
+  >(null)
+  const [myChoice, setMyChoice] = useState<any | null>(null)
+
 
   useEffect(()=>{
     init()
@@ -20,7 +25,7 @@ export default function Dashboard() {
   async function init() {
 
     const { data } = await supabase.auth.getUser()
-    console.log("AUTH USER:", data.user)
+    //console.log("AUTH USER:", data.user)
 
     if(!data.user){
       location.href = "/"
@@ -36,8 +41,8 @@ export default function Dashboard() {
       .eq("id", data.user.id)
       .single()
 
-    console.log("PROFILE:", profile)
-    console.log("PROFILE ERROR:", profileError)
+    //console.log("PROFILE:", profile)
+    //console.log("PROFILE ERROR:", profileError)
 
 
     if(!profile?.approved){
@@ -46,10 +51,16 @@ export default function Dashboard() {
       return
     }
 
-    setApproved(true)
+    if(!profile?.game_active){
+      setMessage("Sei stato eliminato dal gioco")
+      setLoading(false)
+      return
+    }
 
+    setApproved(true)
+    
     // ultimo risultato utente
-    const { data:results } = await supabase
+    const { data:results, error } = await supabase
       .from("user_results")
       .select("*")
       .eq("user_id", data.user.id)
@@ -57,9 +68,27 @@ export default function Dashboard() {
       .limit(1)
 
     if(results && results.length > 0){
-      setLastResult(results[0])
-    }
+      const last = results[0]
+      setLastResult(last)
 
+    //console.log("RESULTS", results)
+    //console.log("ERROR", results && results.length > 0)
+
+      const { data: winners } = await supabase
+        .from("winning_options")
+        .select("option_id")
+        .eq("week_id", last.week_id)
+
+      if (!winners || winners.length === 0) {
+        setResultStatus("attesa")
+      } else if (winners.some(w => w.option_id === last.option_id)) {
+        setResultStatus("passato")
+      } else {
+        setResultStatus("eliminato")
+      }
+    //console.log("LAST RESULT =", lastResult)
+    //console.log("RESULT STATUS =", resultStatus)
+   }
     // settimana attiva
     const { data:week } = await supabase
       .from("weeks")
@@ -73,10 +102,25 @@ export default function Dashboard() {
       const { data:opts } = await supabase
         .from("options")
         .select("*")
-        .eq("week_id",week.id)
+        //.eq("week_id",week.id)
 
       setOptions(opts || [])
     }
+
+    if (week) {
+      const { data: choice } = await supabase
+        .from("choices")
+        .select(`
+          option_id,
+          options(name)
+        `)
+        .eq("user_id", data.user.id)
+        .eq("week_id", week.id)
+        .maybeSingle()
+
+      setMyChoice(choice)
+    }
+
 
     setLoading(false)
   }
@@ -102,10 +146,12 @@ export default function Dashboard() {
   return (
     <div style={{padding:40}}>
       <h1>Dashboard Utente</h1>
-        {lastResult && (
+        {resultStatus && (
           <div style={{marginTop:20,padding:10,border:"1px solid #ccc"}}>
             Ultima settimana:
-            {lastResult.is_winner ? " ✅ passata" : " ❌ eliminato"}
+            {resultStatus === "attesa" && " ⏳ in attesa risultati"}
+            {resultStatus === "passato" && " ✅ passata"}
+            {resultStatus === "eliminato" && " ❌ eliminato"}
           </div>
         )}
 
@@ -116,17 +162,31 @@ export default function Dashboard() {
           <h2>Settimana attiva</h2>
           <p>{week.start_date} → {week.end_date}</p>
 
-          <h3>Opzioni disponibili</h3>
+          <h3>Opzioni</h3>
 
-          {options.map(o => (
-            <button
-              key={o.id}
-              onClick={()=>choose(o.id)}
-              style={{display:"block",margin:10}}
-            >
-              {o.name}
-            </button>
-          ))}
+          {myChoice ? (
+            <div style={{
+              padding:12,
+              border:"1px solid #ccc",
+              background:"#f5f5f5",
+              color:"#000000",
+              marginTop:10
+            }}>
+              Hai già scelto:
+              <b> {myChoice.options?.name || myChoice.option_id}</b>
+            </div>
+          ) : (
+            options.map(o => (
+              <button
+                key={o.id}
+                onClick={()=>choose(o.id)}
+                style={{display:"block",margin:10}}
+              >
+                {o.name}
+              </button>
+            ))
+          )}
+
         </>
       )}
 
