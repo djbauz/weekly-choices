@@ -16,6 +16,8 @@ export default function Dashboard() {
     "attesa" | "passato" | "eliminato" | null
   >(null)
   const [myChoice, setMyChoice] = useState<any | null>(null)
+  const [history, setHistory] = useState<any[]>([])
+
 
 
   useEffect(()=>{
@@ -121,6 +123,20 @@ export default function Dashboard() {
       setMyChoice(choice)
     }
 
+    // storico giocate
+    const { data: hist } = await supabase
+      .from("user_results")
+      .select(`
+        week_id,
+        option_id,
+        is_winner,
+        weeks(start_date,end_date),
+        options(name)
+      `)
+      .eq("user_id", data.user.id)
+      .order("week_id", { ascending: false })
+
+    setHistory(hist || [])
 
     setLoading(false)
   }
@@ -143,54 +159,184 @@ export default function Dashboard() {
 
   if(!approved) return <div>{message}</div>
 
-  return (
-    <div style={{padding:40}}>
-      <h1>Dashboard Utente</h1>
-        {resultStatus && (
-          <div style={{marginTop:20,padding:10,border:"1px solid #ccc"}}>
-            Ultima settimana:
-            {resultStatus === "attesa" && " ⏳ in attesa risultati"}
-            {resultStatus === "passato" && " ✅ passata"}
-            {resultStatus === "eliminato" && " ❌ eliminato"}
-          </div>
-        )}
+return (
+  <div style={{
+    padding: 40,
+    maxWidth: 900,
+    margin: "0 auto",
+    fontFamily: "system-ui"
+  }}>
 
-      <p>Email: {user.email}</p>
+    <h1 style={{fontSize: 32, marginBottom: 10}}>
+      🎯 Dashboard Giocatore
+    </h1>
 
-      {week && (
-        <>
-          <h2>Settimana attiva</h2>
-          <p>{week.start_date} → {week.end_date}</p>
+    <div style={{color:"#666", marginBottom:30}}>
+      {user.email}
+    </div>
 
-          <h3>Opzioni</h3>
 
-          {myChoice ? (
-            <div style={{
-              padding:12,
-              border:"1px solid #ccc",
-              background:"#f5f5f5",
-              color:"#000000",
-              marginTop:10
-            }}>
-              Hai già scelto:
-              <b> {myChoice.options?.name || myChoice.option_id}</b>
-            </div>
-          ) : (
-            options.map(o => (
-              <button
-                key={o.id}
-                onClick={()=>choose(o.id)}
-                style={{display:"block",margin:10}}
-              >
+    {/* ===== STATO RISULTATO ===== */}
+
+    {resultStatus && (
+      <div style={{
+        padding:20,
+        borderRadius:12,
+        border:"1px solid #e5e5e5",
+        marginBottom:20,
+        background:"#fafafa"
+      }}>
+        <div style={{fontSize:14,color:"#666"}}>Ultima settimana</div>
+
+        <div style={{fontSize:20,fontWeight:600}}>
+          {resultStatus === "attesa" && "⏳ In attesa risultati admin"}
+          {resultStatus === "passato" && "✅ Passata"}
+          {resultStatus === "eliminato" && "❌ Eliminato"}
+        </div>
+      </div>
+    )}
+
+
+    {/* ===== SETTIMANA ATTIVA ===== */}
+
+    {week && (
+      <div style={{
+        padding:20,
+        borderRadius:12,
+        border:"1px solid #e5e5e5",
+        marginBottom:30
+      }}>
+        <div style={{fontSize:14,color:"#666"}}>Settimana attiva</div>
+
+        <div style={{fontSize:18,fontWeight:600}}>
+          {week.start_date} → {week.end_date}
+        </div>
+      </div>
+    )}
+
+
+    {/* ===== SCELTA GIÀ FATTA ===== */}
+
+    {myChoice && (
+      <div style={{
+        padding:20,
+        borderRadius:12,
+        background:"#eef6ff",
+        border:"1px solid #cfe3ff",
+        marginBottom:20
+      }}>
+        <div style={{fontSize:14,color:"#4a6fa5"}}>
+          Hai già scelto questa settimana
+        </div>
+
+        <div style={{fontSize:22,fontWeight:700}}>
+          {myChoice.option_name}
+        </div>
+      </div>
+    )}
+
+
+    {/* ===== OPZIONI ===== */}
+
+    {!myChoice && week && (
+      <>
+        <h3 style={{marginBottom:15}}>Scegli la tua opzione</h3>
+
+        <div style={{
+          display:"grid",
+          gridTemplateColumns:"repeat(auto-fit, minmax(220px,1fr))",
+          gap:16
+        }}>
+          {options.map(o => (
+            <div
+              key={o.id}
+              onClick={() => choose(o.id)}
+              style={{
+                padding:20,
+                borderRadius:12,
+                border:"1px solid #ddd",
+                cursor:"pointer",
+                transition:"0.15s",
+                background:"#fff",
+                color:"#000000"
+              }}
+              onMouseEnter={e =>
+                (e.currentTarget.style.transform = "translateY(-2px)")
+              }
+              onMouseLeave={e =>
+                (e.currentTarget.style.transform = "translateY(0)")
+              }
+            >
+              <div style={{fontSize:18,fontWeight:600}}>
                 {o.name}
-              </button>
-            ))
-          )}
+              </div>
 
-        </>
+              <div style={{fontSize:13,color:"#777",marginTop:6}}>
+                clicca per scegliere
+              </div>
+            </div>
+          ))}
+        </div>
+      </>
+    )}
+
+
+    {!week && (
+      <div style={{color:"#888"}}>
+        Nessuna settimana attiva
+      </div>
+    )}
+
+
+      {/* ===== STORICO SCELTE ===== */}
+
+      {history.length > 0 && (
+        <div style={{
+          marginTop:40,
+          padding:20,
+          borderRadius:12,
+          border:"1px solid #e5e5e5"
+        }}>
+
+          <h3 style={{marginBottom:15}}>
+            📜 Storico scelte
+          </h3>
+
+          {history.map(h => {
+
+            let status = "⏳"
+            if (h.is_winner === true) status = "✅"
+            if (h.is_winner === false) status = "❌"
+
+            return (
+              <div key={h.week_id}
+                style={{
+                  display:"flex",
+                  justifyContent:"space-between",
+                  padding:"10px 0",
+                  borderBottom:"1px solid #eee"
+                }}
+              >
+                <div>
+                  <div style={{fontWeight:600}}>
+                    {h.weeks.start_date} → {h.weeks.end_date}
+                  </div>
+
+                  <div style={{fontSize:14,color:"#666"}}>
+                    {h.options.name}
+                  </div>
+                </div>
+
+                <div style={{fontSize:20}}>
+                  {status}
+                </div>
+              </div>
+            )
+          })}
+
+        </div>
       )}
 
-      {!week && <p>Nessuna settimana attiva</p>}
     </div>
   )
 }
