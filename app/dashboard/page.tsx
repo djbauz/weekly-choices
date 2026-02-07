@@ -188,7 +188,7 @@ return (
       }}>
         <div style={{fontSize:14,color:"#666"}}>Ultima settimana</div>
 
-        <div style={{fontSize:20,fontWeight:600}}>
+        <div style={{fontSize:20,fontWeight:600, color:"#000000"}}>
           {resultStatus === "attesa" && "⏳ In attesa risultati admin"}
           {resultStatus === "passato" && "✅ Passata"}
           {resultStatus === "eliminato" && "❌ Eliminato"}
