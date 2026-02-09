@@ -15,7 +15,7 @@ jobs:
 
       - name: Download New CSV
         run: |
-          if curl -o data/new-data.csv https://www.football-data.co.uk/mmz4281/2526/I1.csv; then
+          if curl -o app/data/new-data.csv https://www.football-data.co.uk/mmz4281/2526/I1.csv; then
             echo "CSV download successful."
           else
             echo "CSV download failed."
@@ -25,7 +25,7 @@ jobs:
       - name: Check CSV File Size
         id: check-csv
         run: |
-          if [ -s data/new-data.csv ]; then
+          if [ -s app/data/new-data.csv ]; then
             echo "CSV file is not empty."
           else
             echo "CSV file is empty."
@@ -35,7 +35,7 @@ jobs:
       - name: Check for Differences
         id: check-differences
         run: |
-          if ! diff -q data/new-data.csv data/I1.csv; then
+          if ! diff -q app/data/new-data.csv app/data/I1.csv; then
             echo "CSV files are different."
             echo "DIFFERENT_CSV=true" >> $GITHUB_ENV
           else
@@ -46,7 +46,7 @@ jobs:
       - name: Overwrite CSV
         if: steps.check-csv.outcome == 'success' && env.DIFFERENT_CSV == 'true'
         run: |
-          mv data/new-data.csv data/I1.csv
+          mv app/data/new-data.csv app/data/I1.csv
 
       - name: Commit and Push Changes
         if: steps.check-csv.outcome == 'success' && env.DIFFERENT_CSV == 'true'
@@ -59,7 +59,7 @@ jobs:
 
           git checkout -b "$branch_name"
 
-          git add data/I1.csv
+          git add app/data/I1.csv
 
           git commit -m "Update CSV file"
 
