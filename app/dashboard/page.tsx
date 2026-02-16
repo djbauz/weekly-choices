@@ -166,13 +166,16 @@ function TeamsCard({ data, onSelect }: any) {
 
         {data.playable_teams.map((t: any) => (
 
-        <button
+      <button
         key={t.id ?? t.full_name}
-        onClick={() => onSelect(t.id)}
+        onClick={() => {
+          console.log("TEAM", t)
+          playChoice(t.id)
+        }}
         className="teamBtn"
-        >
+      >
         {t.short_name ?? t.name}
-        </button>
+      </button>
 
         ))}
 
