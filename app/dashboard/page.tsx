@@ -97,7 +97,7 @@ function UserStatusCard({ data }: any) {
       <h2>Il tuo stato</h2>
 
       {data.player?.has_played ? (
-        <p>Hai già giocato: <b>{data.player.choice}</b></p>
+        <p>Hai già giocato: <b>{data.player.choice_name}</b></p>
       ) : (
         <p>Non hai ancora giocato</p>
       )}
@@ -142,7 +142,7 @@ function TeamsCard({ data, onSelect }: any) {
         <h2>La tua scelta</h2>
 
         <div className="chosen">
-          {data.player.choice}
+          {data.player.choice_name}
         </div>
 
       </div>
