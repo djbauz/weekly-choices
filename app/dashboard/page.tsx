@@ -170,7 +170,7 @@ function TeamsCard({ data, onSelect }: any) {
         key={t.id ?? t.full_name}
         onClick={() => {
           console.log("TEAM", t)
-          playChoice(t.id)
+          onSelect(t.id)
         }}
         className="teamBtn"
       >
