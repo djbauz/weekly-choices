@@ -40,3 +40,63 @@ a {
     color-scheme: dark;
   }
 }
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 16px;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  color: black;
+}
+
+.match {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.score {
+  font-weight: bold;
+}
+
+.teams {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
+  gap: 10px;
+  color: black;
+}
+
+.teamBtn {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+  cursor: pointer;
+  transition: 0.2s;
+  color: black;
+}
+
+.teamBtn:hover {
+  background: #ececec;
+}
+
+.chosen {
+  padding: 14px;
+  border-radius: 10px;
+  background: #e7f7e7;
+  font-weight: bold;
+  text-align: center;
+}
