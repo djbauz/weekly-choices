@@ -96,8 +96,8 @@ function UserStatusCard({ data }: any) {
 
       <h2>Il tuo stato</h2>
 
-      {data.user_choice ? (
-        <p>Hai già giocato: <b>{data.user_choice}</b></p>
+      {data.player?.has_played ? (
+        <p>Hai già giocato: <b>{data.player.choice}</b></p>
       ) : (
         <p>Non hai ancora giocato</p>
       )}
@@ -135,14 +135,14 @@ function MatchesCard({ matches }: any) {
 
 function TeamsCard({ data, onSelect }: any) {
 
-  if (data.user_choice) {
+  if (data.player?.has_played) {
     return (
       <div className="card">
 
         <h2>La tua scelta</h2>
 
         <div className="chosen">
-          {data.user_choice}
+          {data.player.choice}
         </div>
 
       </div>
