@@ -8,9 +8,23 @@ export default function Dashboard() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    load()
-  }, [])
+  useEffect(()=>{
+    init()
+  },[])
+
+  async function init(){
+    await checkLogged()
+    await load()
+    setLoading(false)
+  }
+
+  async function checkLogged(){
+    const { data: { user } } = await supabase.auth.getUser()
+    if(!user){
+      location.href="/"
+      return
+    }
+  }
 
   async function load() {
     const { data, error } = await supabase
@@ -63,45 +77,33 @@ export default function Dashboard() {
 
 
 function WeekCard({ week }: any) {
-
   const today = new Date().toLocaleDateString()
-
   return (
     <div className="card">
-
       <h2>Settimana di gioco</h2>
-
       <p>Oggi è {today}</p>
-
       <p>
-        Apertura: {formatDate(week.bet_open_at)}
+        Apertura: {formatDate(week.start_at)}
       </p>
-
       <p>
-        Chiusura: {formatDate(week.bet_close_at)}
+        Chiusura: {formatDate(week.betting_closes_at)}
       </p>
-
       <p>
         Stato: <b>{week.status}</b>
       </p>
-
     </div>
   )
 }
 
 function UserStatusCard({ data }: any) {
-
   return (
     <div className="card">
-
       <h2>Il tuo stato</h2>
-
       {data.player?.has_played ? (
         <p>Hai già giocato: <b>{data.player.choice_name}</b></p>
       ) : (
         <p>Non hai ancora giocato</p>
       )}
-
     </div>
   )
 }
