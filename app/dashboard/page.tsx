@@ -64,7 +64,10 @@ export default function Dashboard() {
 
       <UserStatusCard data={data} />
 
-      <MatchesCard matches={data.matches} />
+      <MatchesCard
+        matches={data.matches}
+        playerChoice={data.player?.choice}
+      />
 
       <TeamsCard
         data={data}
@@ -108,29 +111,35 @@ function UserStatusCard({ data }: any) {
   )
 }
 
-function MatchesCard({ matches }: any) {
-
+function MatchesCard({ matches, playerChoice }: any) {
   return (
     <div className="card">
-
       <h2>Partite della settimana</h2>
 
-      {matches?.map((m: any, i: number) => (
+      {matches?.map((m: any, i: number) => {
+        const isSelected =
+          playerChoice &&
+          (playerChoice === m.home_option_id ||
+           playerChoice === m.away_option_id)
 
-        <div key={i} className="match">
+        return (
+          <div
+            key={i}
+            className={`match ${isSelected ? "selected" : ""}`}
+          >
+            <div>
+              {m.home_team} vs {m.away_team}
+              {isSelected && (
+                <span className="badge">✓ La tua scelta</span>
+              )}
+            </div>
 
-          <div>
-            {m.home_team} vs {m.away_team}
+            <div className="score">
+              {m.home_score ?? "-"} : {m.away_score ?? "-"}
+            </div>
           </div>
-
-          <div className="score">
-            {m.home_score ?? "-"} : {m.away_score ?? "-"}
-          </div>
-
-        </div>
-
-      ))}
-
+        )
+      })}
     </div>
   )
 }
