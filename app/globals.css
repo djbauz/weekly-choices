@@ -63,21 +63,32 @@ a {
 
 .match {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
+  flex-direction: column; /* 🔥 chiave per andare a capo */
+  gap: 4px;
   border-bottom: 1px solid #eee;
 }
 
+.match-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .match.selected {
-  background: #243224;
-  border-left: 4px solid #4caf50;
-  box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+  background: #f6ecdd;
+  border-left: 4px solid #f4a42b;
+  box-shadow: 0 0 6px rgba(187, 160, 170, 0.3);
+}
+
+.utc {
+  font-size: 0.85rem;
+  opacity: 0.7;
 }
 
 .badge {
   margin-left: 8px;
   font-size: 12px;
-  color: #4caf50;
+  color: #af4c7c;
   font-weight: bold;
 }
 
@@ -102,6 +113,16 @@ a {
   color: black;
 }
 
+.teamBtnRed {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f08c8c;
+  cursor: pointer;
+  transition: 0.2s;
+  color: black;
+}
+
 .teamBtn:hover {
   background: #ececec;
 }
@@ -112,4 +133,24 @@ a {
   background: #e7f7e7;
   font-weight: bold;
   text-align: center;
+}
+
+/* PRE DASHBOARD */
+
+.playButton {
+  background: #16a34a;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.eliminatedBox {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: bold;
 }

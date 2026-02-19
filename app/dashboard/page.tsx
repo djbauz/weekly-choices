@@ -50,7 +50,6 @@ export default function Dashboard() {
     }
 
 
-
   if (loading) return <div>Loading...</div>
 
   if (!data) return <div>Nessun dato</div>
@@ -58,7 +57,7 @@ export default function Dashboard() {
   return (
     <div className="container">
 
-      <h1 className="title">Dashboard</h1>
+      <h1 className="title">Dashboard UUC</h1>
 
       <WeekCard week={data.week} />
 
@@ -66,7 +65,7 @@ export default function Dashboard() {
 
       <MatchesCard
         matches={data.matches}
-        playerChoice={data.player?.choice}
+        playerChoice={data.player?.choice_team_id}
       />
 
       <TeamsCard
@@ -119,23 +118,36 @@ function MatchesCard({ matches, playerChoice }: any) {
       {matches?.map((m: any, i: number) => {
         const isSelected =
           playerChoice &&
-          (playerChoice === m.home_option_id ||
-           playerChoice === m.away_option_id)
+          (playerChoice === m.home_team_id ||
+           playerChoice === m.away_team_id)
+        const isRecovery = m.flag !== null ? true : false
 
         return (
           <div
             key={i}
             className={`match ${isSelected ? "selected" : ""}`}
           >
-            <div>
-              {m.home_team} vs {m.away_team}
-              {isSelected && (
-                <span className="badge">✓ La tua scelta</span>
-              )}
+            {/* PRIMA RIGA */}
+            <div className="match-row">
+              <span>
+                {isRecovery ? "[R] " : ""} {m.home_team} vs {m.away_team}
+                {isSelected && <span className="badge">✓ </span>}
+              </span>
+
+              <span className="score">
+                {m.home_score ?? "-"} : {m.away_score ?? "-"}
+              </span>
             </div>
 
-            <div className="score">
-              {m.home_score ?? "-"} : {m.away_score ?? "-"}
+            {/* SECONDA RIGA */}
+            <div className="utc">
+              {new Date(m.utc_time).toLocaleString("it-IT", {
+                weekday: "short",
+                day: "2-digit",
+                month: "short",
+                hour: "2-digit",
+                minute: "2-digit"
+              })}
             </div>
           </div>
         )
@@ -143,6 +155,8 @@ function MatchesCard({ matches, playerChoice }: any) {
     </div>
   )
 }
+
+
 
 function TeamsCard({ data, onSelect }: any) {
 
@@ -183,15 +197,12 @@ function TeamsCard({ data, onSelect }: any) {
           console.log("TEAM", t)
           onSelect(t.id)
         }}
-        className="teamBtn"
+        className={`teamBtn${t.previous ? "Red" : ""}`}
       >
         {t.short_name ?? t.name}
       </button>
-
         ))}
-
       </div>
-
     </div>
   )
 }
