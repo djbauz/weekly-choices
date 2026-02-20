@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { useRouter } from "next/navigation"
 
+
 export default function PlayPage() {
 
   const [profile, setProfile] = useState<any>(null)
@@ -13,6 +14,10 @@ export default function PlayPage() {
   useEffect(() => {
     loadData()
   }, [])
+
+  async function openMatrix(leagueId: string) {
+    router.push(`/matrix/${leagueId}`)
+  }
 
   async function loadData() {
     const { data: profileData } = await supabase
@@ -58,7 +63,10 @@ export default function PlayPage() {
             <div className="text-gray-500">
               Riprova nella prossima league
             </div>
-          )}
+          )}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <button onClick={() => openMatrix(league.league_id)}>
+            Matrice
+          </button>
         </div>
       ))}
     </div>

@@ -37,10 +37,21 @@ export default function Dashboard() {
     setLoading(false)
   }
 
-  async function playChoice(optionId: string) {
+  async function playChoice(
+    leagueId: string,
+    weekId: string,
+    optionId: string
+  ) {
+    if (loading) return
+    setLoading(true)
+
     const { error } = await supabase.rpc("play_choice", {
-        p_option: optionId
+      p_league_id: leagueId,
+      p_week_id: weekId,
+      p_option_id: optionId
     })
+
+    setLoading(false)
 
     if (error) {
         alert(error.message)
@@ -70,7 +81,9 @@ export default function Dashboard() {
 
       <TeamsCard
         data={data}
-        onSelect={playChoice}
+        onSelect={(optionId: string) =>
+          playChoice(data.league_id, data.week?.id, optionId)
+        }
       />
 
     </div>
@@ -83,12 +96,31 @@ function WeekCard({ week }: any) {
   return (
     <div className="card">
       <h2>Settimana di gioco</h2>
-      <p>Oggi è {today}</p>
+      <p>Oggi è {new Date().toLocaleString("it-IT", {
+          weekday: "long",
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          //hour: "2-digit",
+          //minute: "2-digit"         
+        })}</p>
       <p>
-        Apertura: {formatDate(week.start_at)}
+        Apertura: {new Date(week.start_at).toLocaleString("it-IT", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit"         
+        })}
       </p>
       <p>
-        Chiusura: {formatDate(week.betting_closes_at)}
+        Chiusura: {new Date(week.betting_closes_at).toLocaleString("it-IT", {
+          weekday: "short",
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit"         
+        })}
       </p>
       <p>
         Stato: <b>{week.status}</b>
