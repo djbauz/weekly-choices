@@ -4,112 +4,63 @@ import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
 import { useRouter } from "next/navigation"
 
-export default function PreDashboard() {
-  const [data, setData] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [users,setUsers] = useState<any>(null)
+export default function PlayPage() {
 
+  const [profile, setProfile] = useState<any>(null)
+  const [leagues, setLeagues] = useState<any[]>([])
   const router = useRouter()
 
   useEffect(() => {
-    load()
+    loadData()
   }, [])
 
-  async function load() {
-    setLoading(true)
+  async function loadData() {
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('nickname')
+      .single()
 
-    const { data: sessionData } = await supabase.auth.getUser()
-    const user = sessionData?.user
+    setProfile(profileData)
 
-    setUsers(user)
+    const { data: leaguesData } = await supabase
+      .rpc('get_my_leagues_dashboard')
 
-    if (!user) {
-      setLoading(false)
-      return
-    }
-
-    const { data: dashboardData, error } = await supabase
-      .rpc("get_player_dashboard")
-
-    if (!error) {
-      setData(dashboardData)
-    } else {
-      console.error(error)
-    }
-
-    setLoading(false)
+    setLeagues(leaguesData || [])
   }
 
-  if (loading) return <div>Loading...</div>
-
-  if (!data) return <div>Errore caricamento</div>
-
-  const player = data.player || {}
-  const week = data.week || {}
-
-  const isEliminated = player.active_player === false
-  const hasPlayed = player.has_played === true
-  const userNick = player.player_nick
-
   return (
-    <><div className="card">
+    <div className="p-6 space-y-6">
 
-      <h1>Schedina</h1> <p>{userNick}</p>
+      <h1 className="text-2xl font-bold">
+        Ciao {profile?.nickname}
+      </h1>
 
-      <div>
-        <b>Settimana:</b> {week.name || "-"}
-      </div>
-
-      <div>
-        <b>Matchday:</b> {week.matchday || "-"}
-      </div>
-
-      <hr />
-
-      <h2>Il tuo stato</h2>
-
-      {isEliminated ? (
-        <div>
-          ❌ Sei stato eliminato
-        </div>
-      ) : (
-        <div>
-          ✅ Sei ancora in gioco
-        </div>
-      )}
-
-      <hr />
-
-      <h2>Ultima giocata</h2>
-
-      {hasPlayed ? (
-        <div>
-          Hai scelto: <b>{player.choice_name || player.choice}</b>
-        </div>
-      ) : (
-        <div>Non hai ancora giocato</div>
-      )}
-
-      <hr />
-
-      {!isEliminated ? (
-        <button
-          onClick={() => router.push("/dashboard")}
-          style={{
-            padding: "12px 20px",
-            fontSize: "18px",
-            cursor: "pointer"
-          }}
+      {leagues.map((league) => (
+        <div
+          key={league.league_id}
+          className="border rounded-xl p-4 space-y-2"
         >
-          GIOCA
-        </button>
-      ) : (
-        <div>
-          Spiace, non puoi accedere al dashboard.
-        </div>
-      )}
+          <h2 className="text-xl font-semibold">
+            {league.league_name}
+          </h2>
 
+          <div>Round: {league.rounds_count}</div>
+          <div>Status: {league.user_status}</div>
+          <div>Giocatori: {league.total_players}</div>
+          <div>Attivi: {league.active_players}</div>
+          <div>Eliminati: {league.eliminated_players}</div>
+
+          {league.user_status === 'active' ? (
+            <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={() => router.push("/dashboard")}>
+              GIOCA
+            </button>
+          ) : (
+            <div className="text-gray-500">
+              Riprova nella prossima league
+            </div>
+          )}
+        </div>
+      ))}
     </div>
-    <div className="card"><h1></h1></div></>
   )
 }
