@@ -6,10 +6,12 @@ import { supabase } from "@/lib/supabaseClient"
 export default function Dashboard() {
 
   const [data, setData] = useState<any>(null)
+  const [choiceCount, setChoiceCount] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
     init()
+    getChoices()
   },[])
 
   async function init(){
@@ -60,6 +62,13 @@ export default function Dashboard() {
     }
     }
 
+  async function getChoices() {
+    const { data, error } = await supabase
+      .rpc("get_choices_count_current_gameweek")
+    if (!error) {
+      setChoiceCount(data || [])
+    }
+  }
 
   if (loading) return <div>Loading...</div>
 
@@ -86,6 +95,10 @@ export default function Dashboard() {
         }
       />
 
+      <CountChoices 
+        data={data}
+        choiceCount={choiceCount}
+      />
     </div>
   )
 }
@@ -188,16 +201,12 @@ function MatchesCard({ matches, playerChoice }: any) {
   )
 }
 
-
-
 function TeamsCard({ data, onSelect }: any) {
 
   if (data.player?.has_played) {
     return (
       <div className="card">
-
         <h2>La tua scelta</h2>
-
         <div className="chosen">
           {data.player.choice_name}
         </div>
@@ -213,6 +222,10 @@ function TeamsCard({ data, onSelect }: any) {
       </div>
     )
   }
+
+  if (data.week.status==='BETTING_CLOSED') {
+  return(<h2>CIAO</h2>)
+}
 
   return (
     <div className="card">
@@ -235,6 +248,75 @@ function TeamsCard({ data, onSelect }: any) {
       </button>
         ))}
       </div>
+    </div>
+  )
+}
+
+type Choice = {
+  squadra: string
+  scelte: number
+}
+
+function CountChoices({ data, choiceCount }: { data: any; choiceCount: Choice[] }) {
+
+  if (data?.week?.status !== 'BETTING_CLOSED') return null
+  if (!Array.isArray(choiceCount) || choiceCount.length === 0) return null
+
+  const total = choiceCount.reduce((sum, c) => sum + c.scelte, 0)
+
+  return (
+    <div className="card">
+
+      <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>
+        Scelte giocatori — Week {data.week.number}
+      </h3>
+
+      {choiceCount.map((item, index) => {
+
+        const percent = total > 0
+          ? Math.round((item.scelte / total) * 100)
+          : 0
+
+        return (
+          <div key={index} style={{ marginBottom: 12 }}>
+
+            {/* Riga testo */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginBottom: 4
+              }}
+            >
+              <span>{item.squadra}</span>
+              <span style={{ fontWeight: 600 }}>
+                {item.scelte} ({percent}%)
+              </span>
+            </div>
+
+            {/* Barra */}
+            <div
+              style={{
+                width: "100%",
+                height: 14,
+                background: "#e5e7eb",
+                borderRadius: 999
+              }}
+            >
+              <div
+                style={{
+                  width: `${percent}%`,
+                  height: "100%",
+                  background: "#3b82f6",
+                  borderRadius: 999,
+                  transition: "width 0.5s"
+                }}
+              />
+            </div>
+
+          </div>
+        )
+      })}
     </div>
   )
 }
