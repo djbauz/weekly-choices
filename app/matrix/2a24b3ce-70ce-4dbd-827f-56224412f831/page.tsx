@@ -13,7 +13,8 @@ type Row = {
 }
 
 export default function MatrixPage({ params }: any) {
-  const leagueId = params.leagueId
+  //const leagueId = params.leagueId
+  const leagueId ='2a24b3ce-70ce-4dbd-827f-56224412f831'
 
   const [rows, setRows] = useState<Row[]>([])
   const [leagueName, setLeagueName] = useState("")
@@ -30,6 +31,7 @@ export default function MatrixPage({ params }: any) {
       "get_league_matrix",
       { p_league_id: leagueId }
     )
+    console.log({leagueId})
 
     if (error) {
       alert(error.message)
@@ -153,6 +155,7 @@ export default function MatrixPage({ params }: any) {
 
         th {
           background: #f5f5f5;
+          color: #000000;
         }
 
         .player {
@@ -162,6 +165,7 @@ export default function MatrixPage({ params }: any) {
 
         .cellRed {
           background: #ffcccc;
+          color: red;
         }
       `}</style>
 

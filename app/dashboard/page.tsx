@@ -255,6 +255,13 @@ function TeamsCard({ data, onSelect }: any) {
 type Choice = {
   squadra: string
   scelte: number
+  status: boolean | null
+}
+
+function getBarColor(status: boolean | null) {
+  if (status === true) return "#22c55e"   // verde
+  if (status === false) return "#ef4444"  // rosso
+  return "#3b82f6"                        // blu
 }
 
 function CountChoices({ data, choiceCount }: { data: any; choiceCount: Choice[] }) {
@@ -307,7 +314,8 @@ function CountChoices({ data, choiceCount }: { data: any; choiceCount: Choice[] 
                 style={{
                   width: `${percent}%`,
                   height: "100%",
-                  background: "#3b82f6",
+                  //background: "#3b82f6",
+                  background: getBarColor(item.status),
                   borderRadius: 999,
                   transition: "width 0.5s"
                 }}
