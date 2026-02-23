@@ -73,11 +73,8 @@ export default function MatrixPage({ params }: any) {
 
   function getCellColor(player: any, round: number, cell: Row | undefined) {
     if (!player.elim_round) return ""
-
     if (round >= player.elim_round) return "cellRed"
-
     if (cell && cell.is_win === false) return "cellRed"
-
     return ""
   }
 

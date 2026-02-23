@@ -275,7 +275,7 @@ function CountChoices({ data, choiceCount }: { data: any; choiceCount: Choice[] 
     <div className="card">
 
       <h3 style={{ fontSize: 18, fontWeight: 600, marginBottom: 12 }}>
-        Scelte giocatori — Week {data.week.number}
+        Scelte giocatori — Current Week {data.week.number}
       </h3>
 
       {choiceCount.map((item, index) => {
