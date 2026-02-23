@@ -203,18 +203,29 @@ function MatchesCard({ matches, playerChoice }: any) {
 
 function TeamsCard({ data, onSelect }: any) {
 
-  if (data.player?.has_played) {
+  const isOpen = data.week?.status === "OPEN"
+  const isClosed = data.week?.status === "BETTING_CLOSED"
+  const hasPlayed = data.player?.has_played
+
+  // BETTING CLOSED
+  if (isClosed) {
     return (
       <div className="card">
-        <h2>La tua scelta</h2>
-        <div className="chosen">
-          {data.player.choice_name}
-        </div>
-
+        {hasPlayed ? (
+          <>
+            <h2>La tua scelta</h2>
+            <div className="chosen">
+              {data.player.choice_name}
+            </div>
+          </>
+        ) : (
+          <h2>Non hai scelto</h2>
+        )}
       </div>
     )
   }
 
+  // OPEN ma nessuna squadra disponibile
   if (!data.playable_teams?.length) {
     return (
       <div className="card">
@@ -223,31 +234,38 @@ function TeamsCard({ data, onSelect }: any) {
     )
   }
 
-  if (data.week.status==='BETTING_CLOSED') {
-  return(<h2>CIAO</h2>)
-}
-
+  // WEEK OPEN
   return (
     <div className="card">
-
       <h2>Scegli la squadra</h2>
-
       <div className="teams">
+        {data.playable_teams.map((t: any) => {
+          const isSelected = hasPlayed && data.player?.choice_id === t.id
 
-        {data.playable_teams.map((t: any) => (
-
-      <button
-        key={t.id ?? t.full_name}
-        onClick={() => {
-          console.log("TEAM", t)
-          onSelect(t.id)
-        }}
-        className={`teamBtn${t.previous ? "Red" : ""}`}
-      >
-        {t.short_name ?? t.name}
-      </button>
-        ))}
+        return (
+          <button
+            key={t.id ?? t.full_name}
+            onClick={() => onSelect(t.id)}
+            className={`
+              teamBtn
+              ${t.previous ? "teamBtnRed" : ""}
+              ${isSelected ? "teamBtnOrange" : ""}
+              `}
+          >
+            {t.short_name ?? t.name}
+          </button>
+        )
+      })}
       </div>
+
+      {hasPlayed && (
+        <div className="card choiceCard">
+          <h2>La tua scelta</h2>
+          <div className="chosen">
+            {data.player.choice_name}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

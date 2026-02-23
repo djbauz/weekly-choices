@@ -113,18 +113,16 @@ a {
   color: black;
 }
 
-.teamBtnRed {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #f08c8c;
-  cursor: pointer;
-  transition: 0.2s;
-  color: black;
-}
-
 .teamBtn:hover {
   background: #ececec;
+}
+
+.teamBtnRed {
+  background: #f08c8c;
+}
+
+.teamBtnOrange {
+  background: #f0b28c;
 }
 
 .chosen {
