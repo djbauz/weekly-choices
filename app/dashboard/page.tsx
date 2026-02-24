@@ -235,39 +235,45 @@ function TeamsCard({ data, onSelect }: any) {
   }
 
   // WEEK OPEN
-  return (
-    <div className="card">
-      <h2>Scegli la squadra</h2>
-      <div className="teams">
-        {data.playable_teams.map((t: any) => {
-          const isSelected = hasPlayed && data.player?.choice_id === t.id
+  if (isOpen) {
+    return (
+      <div className="card">
+        <h2>Scegli la squadra</h2>
+        <div className="teams">
+          {data.playable_teams.map((t: any) => {
+            const isSelected = hasPlayed && data.player?.choice_id === t.id
 
-        return (
-          <button
-            key={t.id ?? t.full_name}
-            onClick={() => onSelect(t.id)}
-            className={`
-              teamBtn
-              ${t.previous ? "teamBtnRed" : ""}
-              ${isSelected ? "teamBtnOrange" : ""}
-              `}
-          >
-            {t.short_name ?? t.name}
-          </button>
-        )
-      })}
-      </div>
-
-      {hasPlayed && (
-        <div className="card choiceCard">
-          <h2>La tua scelta</h2>
-          <div className="chosen">
-            {data.player.choice_name}
-          </div>
+          return (
+            <button
+              key={t.id ?? t.full_name}
+              onClick={() => onSelect(t.id)}
+              className={`
+                teamBtn
+                ${t.previous ? "teamBtnRed" : ""}
+                ${isSelected ? "teamBtnOrange" : ""}
+                `}
+            >
+              {t.short_name ?? t.name}
+            </button>
+          )
+        })}
         </div>
-      )}
-    </div>
-  )
+        </div>
+    )}
+  if (hasPlayed) {
+    return (  
+      <div>
+        {hasPlayed && (
+          <div className="card choiceCard">
+            <h2>La tua scelta</h2>
+            <div className="chosen">
+              {data.player.choice_name}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }  
 }
 
 type Choice = {
