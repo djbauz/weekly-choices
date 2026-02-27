@@ -78,6 +78,7 @@ export default function Dashboard() {
     <div className="container">
 
       <h1 className="title">Dashboard UUC</h1>
+      <h3>Giocatore: {data.player?.player_nick}</h3>
 
       <WeekCard week={data.week} />
 

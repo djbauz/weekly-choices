@@ -18,7 +18,7 @@ export default function Home() {
     if(error){
       alert(error.message)
     } else {
-      location.href = "/dashboard"
+      location.href = "/play"
     }
   }
 
