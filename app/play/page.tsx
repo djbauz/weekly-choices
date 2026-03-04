@@ -78,13 +78,13 @@ export default function PlayPage() {
           <div>Eliminati: {league.eliminated_players}</div>
 
           <div>Status: {league.user_status}</div>
+          <button className="playBtn" onClick={() => router.push("/dashboard")}>
+            Partite
+          </button>
+          &nbsp;&nbsp;&nbsp;&nbsp;
           <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
             Rounds
           </button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-            <button className="playBtn" onClick={() => router.push("/dashboard")}>
-              Partite
-            </button>
         </div>
       ))}
     </div>
