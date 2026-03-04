@@ -23,16 +23,18 @@ export default function Home() {
   }
 
   return (
-    <div style={{padding:40}}>
+    //<div style={{padding:40}}>
+    <div className="container">
       <h1>ULTIMO UOMO CHALLENGE</h1>
 
-      <input placeholder="email" onChange={e=>setEmail(e.target.value)} />
-      <br/>
-      <input type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
-      <br/>
-
-      <button onClick={login}>Login</button>&nbsp;&nbsp;&nbsp;
-      <button onClick={signup}>Signup</button>
+      <div className="card">
+        <input className="content" placeholder="email" onChange={e=>setEmail(e.target.value)} />
+        <br />
+        <input className="content" type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
+        <br />
+      <button className="playBtn" onClick={login}>Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button className="playBtn" onClick={signup}>Signup</button>
+      </div>
     </div>
   )
 }

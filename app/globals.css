@@ -136,6 +136,7 @@ a {
   font-weight: bold;
   text-align: center;
   width: 30%;
+  margin: 10px 0;
 }
 
 .chosen {
@@ -165,3 +166,5 @@ a {
   border-radius: 10px;
   font-weight: bold;
 }
+
+.content { margin: 10px 0;white-space: pre-wrap; }
