@@ -20,12 +20,20 @@ export default function PlayPage() {
   }
 
   async function loadData() {
-    const { data: { user } } = await supabase.auth.getUser()
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session?.user) {
+      location.href = "/"
+      return
+    }
+    const user = session.user 
+
+    /*const { data: { user } } = await supabase.auth.getUser()
     if(!user){
       location.href="/"
       return
-    }
-    const { data: profileData, error:profileError } = await supabase
+    }*/
+
+    /*const { data: profileData, error:profileError } = await supabase
       .from('profiles')
       .select('nickname')
       .eq('id', user.id)
@@ -36,10 +44,10 @@ export default function PlayPage() {
       return
     }
 
-    setProfile(profileData)
+    setProfile(profileData)*/
 
     const { data: leaguesData, error: leaguesError } = await supabase
-      .rpc('get_my_leagues_dashboard')
+      .rpc('get_my_leagues_dashboard_v2')
     if (leaguesError) {
       console.error(leaguesError)
       return
@@ -48,10 +56,10 @@ export default function PlayPage() {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="container">
 
       <h1 className="text-2xl font-bold">
-        Ciao {profile?.nickname}
+        Ciao {leagues[0]?.nickname}
       </h1>
       <br />
 
@@ -68,22 +76,15 @@ export default function PlayPage() {
           <div>Giocatori: {league.total_players}</div>
           <div>Attivi: {league.active_players}</div>
           <div>Eliminati: {league.eliminated_players}</div>
-          <button onClick={() => openMatrix(league.league_id)}>
-            Matrice Giornate
+          <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
+            Rounds
           </button>
           <br />
           <br />
           <div>Status: {league.user_status}</div>
-
-          {league.user_status === 'active' ? (
-            <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={() => router.push("/dashboard")}>
-              GIOCA
+            <button className="playBtn" onClick={() => router.push("/dashboard")}>
+              Partite
             </button>
-          ) : (
-            <div className="text-gray-500">
-              Riprova nella prossima league
-            </div>
-          )}
         </div>
       ))}
     </div>

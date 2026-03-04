@@ -78,8 +78,7 @@ export default function Dashboard() {
     <div className="container">
 
       <h1 className="title">Dashboard UUC</h1>
-      <h3>Giocatore: {data.player?.player_nick}</h3>
-
+      <h3>Giocatore: {data.player_info?.member_nickname}</h3>
       <WeekCard week={data.week} />
 
       <UserStatusCard data={data} />
@@ -144,14 +143,24 @@ function WeekCard({ week }: any) {
 }
 
 function UserStatusCard({ data }: any) {
+  const isActive = data.player_info?.member_status_league === "active"
+  const hasPlayed =  data.player?.has_played !== null
+
+  // user Active
+  if (isActive) {
+      return (
+        <div className="card">
+        <h2>Il tuo stato è: ✅ ATTIVO</h2>
+        {hasPlayed ? 
+          <p>Hai già giocato: <b>{data.player.choice_name}</b></p> : 
+          <p>Non hai ancora giocato</p>}
+        </div>
+      )
+  }
+  // user Eliminated
   return (
     <div className="card">
-      <h2>Il tuo stato</h2>
-      {data.player?.has_played ? (
-        <p>Hai già giocato: <b>{data.player.choice_name}</b></p>
-      ) : (
-        <p>Non hai ancora giocato</p>
-      )}
+      <h2>Il tuo stato è: ❌ eliminato</h2>
     </div>
   )
 }
@@ -207,6 +216,12 @@ function TeamsCard({ data, onSelect }: any) {
   const isOpen = data.week?.status === "OPEN"
   const isClosed = data.week?.status === "BETTING_CLOSED"
   const hasPlayed = data.player?.has_played
+  const isActive = data.player_info?.member_status_league === "active"
+
+  // USER ELIMINATED
+  if (!isActive) {
+    return
+  }
 
   // BETTING CLOSED
   if (isClosed) {
