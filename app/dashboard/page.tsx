@@ -144,7 +144,7 @@ function WeekCard({ week }: any) {
 
 function UserStatusCard({ data }: any) {
   const isActive = data.player_info?.member_status_league === "active"
-  const hasPlayed =  data.player?.has_played !== null
+  const hasPlayed =  data.player?.has_played === true
 
   // user Active
   if (isActive) {
@@ -152,7 +152,7 @@ function UserStatusCard({ data }: any) {
         <div className="card">
         <h2>Il tuo stato è: ✅ ATTIVO</h2>
         {hasPlayed ? 
-          <p>Hai già giocato: <b>{data.player.choice_name}</b></p> : 
+          <p>Hai già giocato: <b>{data.player?.choice_name}</b></p> : 
           <p>Non hai ancora giocato</p>}
         </div>
       )
