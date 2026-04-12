@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useState } from "react"
@@ -14,7 +15,7 @@ type Row = {
 
 export default function MatrixPage({ params }: any) {
   //const leagueId = params.leagueId
-  const leagueId ='2a24b3ce-70ce-4dbd-827f-56224412f831'
+  const leagueId ='7568d15f-ade4-4fad-9ad9-107c89ebda7c'
 
   const [rows, setRows] = useState<Row[]>([])
   const [leagueName, setLeagueName] = useState("")
@@ -71,15 +72,6 @@ export default function MatrixPage({ params }: any) {
   const players = Object.values(playersMap)
   const rounds = Array.from(roundsSet).sort((a, b) => a - b)
 
-  const lastRound = rounds[rounds.length - 1]
-
-  const sortedPlayers = [...players].sort((a, b) => {
-    const aVal = a.rounds[lastRound]?.option_name || ""
-    const bVal = b.rounds[lastRound]?.option_name || ""
-
-    return bVal.localeCompare(aVal) // orden alfabético
-  })
-
   function getCellColor(player: any, round: number, cell: Row | undefined) {
     if (!player.elim_round) return ""
     if (round >= player.elim_round) return "cellRed"
@@ -106,8 +98,7 @@ export default function MatrixPage({ params }: any) {
           </thead>
 
           <tbody>
-            {sortedPlayers.map((p: any, i: number) => (
-            //{players.map((p: any, i: number) => (
+            {players.map((p: any, i: number) => (
               <tr key={i}>
                 <td className="player">{p.nickname}</td>
 

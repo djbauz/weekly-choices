@@ -19,6 +19,10 @@ export default function PlayPage() {
     router.push(`/matrix/${leagueId}`)
   }
 
+  async function openDashboard(leagueId: string) {
+    router.push(`/dashboard/${leagueId}`)
+  }
+
   async function loadData() {
     const { data: { session } } = await supabase.auth.getSession()
     if (!session?.user) {
@@ -78,7 +82,8 @@ export default function PlayPage() {
           <div>Eliminati: {league.eliminated_players}</div>
 
           <div>Status: {league.user_status}</div>
-          <button className="playBtn" onClick={() => router.push("/dashboard")}>
+          {/* <button className="playBtn" onClick={() => router.push("/dashboard")}> */}
+          <button className="playBtn" onClick={() => openDashboard(league.league_id)}>
             Partite
           </button>
           &nbsp;&nbsp;&nbsp;&nbsp;
