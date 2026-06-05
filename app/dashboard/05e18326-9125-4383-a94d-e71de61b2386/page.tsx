@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient"
 
 export default function Dashboard({ params }: { params: { leagueId: string } }) {
   const leagueId = params.leagueId;
-  console.log(leagueId)
+  console.log(params)
   const [data, setData] = useState<any>(null)
   const [choiceCount, setChoiceCount] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
