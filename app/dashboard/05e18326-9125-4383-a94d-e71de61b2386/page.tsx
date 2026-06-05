@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import { useParams } from "next/navigation";
 
-export default function Dashboard({ params }: { params: { leagueId: string } }) {
-  const leagueId = params.leagueId;
-  console.log(params)
+
+export default function Dashboard() {
+  const { leagueId } = useParams();
+  console.log(leagueId)
   const [data, setData] = useState<any>(null)
   const [choiceCount, setChoiceCount] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
