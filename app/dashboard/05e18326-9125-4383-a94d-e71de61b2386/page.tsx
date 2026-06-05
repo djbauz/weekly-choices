@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
 
-export default function Dashboard() {
-
+export default function Dashboard({ params }: { params: { leagueId: string } }) {
+  const leagueId = params.leagueId;
+  console.log(leagueId)
   const [data, setData] = useState<any>(null)
   const [choiceCount, setChoiceCount] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
