@@ -6,8 +6,10 @@ import { useParams } from "next/navigation";
 
 
 export default function Dashboard() {
-  const { id } = useParams();
-  console.log(id)
+  const params = useParams();
+  const id = params?.id as string;
+  console.log(id);
+  
   const [data, setData] = useState<any>(null)
   const [choiceCount, setChoiceCount] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
