@@ -83,7 +83,7 @@ export default function Dashboard() {
 
       <h1 className="title">Dashboard UUC</h1>
       <h3>Giocatore: {data.player_info?.member_nickname}</h3>
-      <h3>League: {data.league_id}</h3>
+      <h3>League: {leagueId}</h3>
       <WeekCard week={data.week} />
 
       <UserStatusCard data={data} />
