@@ -34,7 +34,7 @@ export default function Dashboard() {
 
   async function load() {
     const { data, error } = await supabase
-      .rpc("get_player_dashboard")
+      .rpc("get_player_dashboard_v2", {p_league_id: leagueId})
 
     if (!error) {
       setData(data)
@@ -83,7 +83,7 @@ export default function Dashboard() {
 
       <h1 className="title">Dashboard UUC</h1>
       <h3>Giocatore: {data.player_info?.member_nickname}</h3>
-      <h3>League: {leagueId}</h3>
+      <h3>League: {data.league_name}</h3>
       <WeekCard week={data.week} />
 
       <UserStatusCard data={data} />
