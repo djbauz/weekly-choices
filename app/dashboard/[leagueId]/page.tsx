@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 
 export default function Dashboard() {
   const { leagueId } = useParams();
-  console.log(leagueId);
+  //console.log(leagueId);
   
   const [data, setData] = useState<any>(null)
   const [choiceCount, setChoiceCount] = useState<any[]>([])

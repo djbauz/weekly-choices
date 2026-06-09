@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabaseClient"
+import { useParams } from "next/navigation";
 
 type Row = {
   user_id: string
@@ -13,8 +14,7 @@ type Row = {
 }
 
 export default function MatrixPage({ params }: any) {
-  //const leagueId = params.leagueId
-  const leagueId ='05e18326-9125-4383-a94d-e71de61b2386'
+  const { leagueId } = useParams();
 
   const [rows, setRows] = useState<Row[]>([])
   const [leagueName, setLeagueName] = useState("")
