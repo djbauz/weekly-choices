@@ -9,7 +9,7 @@ export default function Home() {
 
   const signup = async () => {
     const { error } = await supabase.auth.signUp({ email, password })
-    alert(error ? error.message : "Signup ok")
+    alert(error ? error.message : "Signup ok, check your email")
   }
 
   const login = async () => {

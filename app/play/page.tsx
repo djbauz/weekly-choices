@@ -63,35 +63,41 @@ export default function PlayPage() {
     <div className="container">
 
       <h1 className="text-2xl font-bold">
-        Ciao {leagues[0]?.nickname}
+        Ciao {leagues[0]?.nickname ?? "New User"}
       </h1>
       <br />
 
-      {leagues.map((league) => (
-        <div
-          key={league.league_id}
-           className="card"
-        >
-          <h2 className="text-xl font-semibold">
-            {league.league_name}
-          </h2>
+  {leagues.length === 0 ? (
+    <h2 className="text-xl font-semibold">
+      In attesa di entrare nella tua prima league
+    </h2>
+  ) : (
+        leagues.map((league) => (
+          <div
+            key={league.league_id}
+            className="card"
+          >
+            <h2 className="text-xl font-semibold">
+              {league.league_name}
+            </h2>
 
-          <div>Round: {league.rounds_count}</div>
-          <div>Giocatori: {league.total_players}</div>
-          <div>Attivi: {league.active_players}</div>
-          <div>Eliminati: {league.eliminated_players}</div>
+            <div>Round: {league.rounds_count}</div>
+            <div>Giocatori: {league.total_players}</div>
+            <div>Attivi: {league.active_players}</div>
+            <div>Eliminati: {league.eliminated_players}</div>
 
-          <div>Status: {league.user_status}</div>
-          {/* <button className="playBtn" onClick={() => router.push("/dashboard")}> */}
-          <button className="playBtn" onClick={() => openDashboard(league.league_id)}>
-            Partite
-          </button>
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
-            Rounds
-          </button>
-        </div>
-      ))}
+            <div>Status: {league.user_status}</div>
+
+            <button className="playBtn" onClick={() => openDashboard(league.league_id)}>
+              Partite
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
+              Rounds
+            </button>
+          </div>
+        ))
+      )}
     </div>
   )
 }
