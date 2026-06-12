@@ -151,7 +151,7 @@ export default function MatrixPage({ params }: any) {
 
         table {
           border-collapse: collapse;
-          min-width: 600px;
+          min-width: 400px;
         }
 
         th, td {
