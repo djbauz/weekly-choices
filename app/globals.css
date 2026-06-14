@@ -125,20 +125,6 @@ a {
   background: #f0b28c;
 }
 
-.playBtn {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #f7f7f7;
-  cursor: pointer;
-  transition: 0.2s;
-  color: black;
-  font-weight: bold;
-  text-align: center;
-  width: 30%;
-  margin: 10px 0;
-}
-
 .chosen {
   padding: 14px;
   border-radius: 10px;
@@ -168,3 +154,39 @@ a {
 }
 
 .content { margin: 10px 0;white-space: pre-wrap; }
+
+
+.contentSignup { 
+  margin: 10px 0;
+  white-space: pre-wrap; 
+  width: 100%;
+}
+
+.playBtn {
+  float: right;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f7f7f7;
+  cursor: pointer;
+  transition: 0.2s;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  width: 30%;
+  margin: 10px 0;
+}
+
+
+.img-max-h-150px{
+  display: flex;
+  justify-content:center;
+  max-height: 120px !important;
+}
+
+.centered-h1 {
+    display: flex;
+    justify-content: center;
+    /*margin-top: 10px;
+    margin-bottom: 10px;*/
+}
