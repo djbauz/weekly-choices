@@ -45,7 +45,7 @@ export default function MyApp() {
 
     return (
         <div>
-            <div className="container">
+            <div className="centered-logo-container">
                 <a href="#">
                     <img src="/uuc_app_logo_v0.png" alt="UUC logo" className="img-max-h-150px" />
                 </a>

@@ -162,9 +162,33 @@ a {
   width: 100%;
 }
 
+.loginCard {
+  width: min(100%, 420px);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.loginInput {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
 .playBtn {
-  float: right;
-  padding: 10px;
+  padding: 10px 16px;
   border-radius: 10px;
   border: 1px solid #ddd;
   background: #f7f7f7;
@@ -173,10 +197,14 @@ a {
   color: black;
   font-weight: bold;
   text-align: center;
-  width: 30%;
   margin: 10px 0;
 }
 
+.centered-logo-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 
 .img-max-h-150px{
   display: flex;

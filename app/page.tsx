@@ -1,14 +1,20 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabaseClient"
+
 
 export default function Home() {
   const router = useRouter()
   
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
+
+  useEffect(() => {
+    setEmail("");
+    setPassword("");
+  }, []);
 
   const signup = () => {
     router.push("/signup")
@@ -25,17 +31,31 @@ export default function Home() {
   }
 
   return (
-    //<div style={{padding:40}}>
     <div className="container">
       <h1>ULTIMO UOMO CHALLENGE</h1>
 
-      <div className="card">
-        <input className="content" placeholder="email" onChange={e=>setEmail(e.target.value)} />
-        <br />
-        <input className="content" type="password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
-        <br />
-      <button className="playBtn" onClick={login}>Login</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <button className="playBtn" onClick={signup}>Signup</button>
+      <div className="card loginCard">
+        <form className="loginForm" autoComplete="off" onSubmit={(e) => { e.preventDefault(); login(); }}>
+          <input
+            className="loginInput"
+            type="email"
+            placeholder="email"
+            autoComplete="email"
+            onChange={e => setEmail(e.target.value)}
+          />
+          <input
+            className="loginInput"
+            type="password"
+            placeholder="password"
+            autoComplete="current-password"
+            onChange={e => setPassword(e.target.value)}
+          />
+
+          <div className="buttonRow">
+            <button type="submit" className="playBtn">Login</button>
+            <button type="button" className="playBtn" onClick={signup}>Signup</button>
+          </div>
+        </form>
       </div>
     </div>
   )
