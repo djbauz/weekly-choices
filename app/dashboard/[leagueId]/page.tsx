@@ -181,6 +181,7 @@ function MatchesCard({ matches, playerChoice }: any) {
           (playerChoice === m.home_team_id ||
            playerChoice === m.away_team_id)
         const isRecovery = m.flag !== null ? true : false
+        const matchFinished = m.status === "FINISHED" ? true : false
 
         return (
           <div
@@ -194,7 +195,7 @@ function MatchesCard({ matches, playerChoice }: any) {
                 {isSelected && <span className="badge">✓ </span>}
               </span>
 
-              <span className="score">
+              <span className={`score ${matchFinished ? "" : "NotFinished"}`}>
                 {m.home_score ?? "-"} : {m.away_score ?? "-"}
               </span>
             </div>

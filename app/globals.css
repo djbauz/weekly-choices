@@ -94,6 +94,11 @@ a {
 
 .score {
   font-weight: bold;
+  color: black;
+}
+
+.score.NotFinished {
+  color: grey;
 }
 
 .teams {
