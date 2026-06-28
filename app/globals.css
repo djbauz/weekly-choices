@@ -231,7 +231,7 @@ a {
 .header {
   position: sticky;
   top: 0;
-  background: white;
+  background: rgb(0, 0, 0);
   border-bottom: 1px solid #e5e5e5;
   z-index: 100;
 }
@@ -269,10 +269,10 @@ a {
 
 .headerLink {
   text-decoration: none;
-  color: #666;
+  color: #9a9a9a;
   font-weight: 500;
 }
 
 .headerLink:hover {
-  color: black;
+  color: white;
 }

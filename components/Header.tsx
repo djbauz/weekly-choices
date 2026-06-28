@@ -12,7 +12,7 @@ export default function Header() {
             alt="UUC App"
             className="headerLogo"
           />
-          <span className="headerTitle">UUC App</span>
+          <span className="headerTitle"></span>
         </Link>
 
         <Link href="/" className="headerLink">
