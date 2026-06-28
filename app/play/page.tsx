@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation"
 
 export default function PlayPage() {
 
-  const [profile, setProfile] = useState<any>(null)
-  const [leagues, setLeagues] = useState<any[]>([])
+  //const [profile, setProfile] = useState<any>(null)
+  const [leagues, setLeagues] = useState<any[] | null>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
   const [expandedLeague, setExpandedLeague] = useState<string | null>(null);
 
@@ -25,55 +26,59 @@ export default function PlayPage() {
   }
 
   async function loadData() {
+    setLoading(true)
+
     const { data: { session } } = await supabase.auth.getSession()
     if (!session?.user) {
       location.href = "/"
       return
     }
-    const user = session.user 
 
-    /*const { data: { user } } = await supabase.auth.getUser()
-    if(!user){
-      location.href="/"
-      return
-    }*/
-
-    /*const { data: profileData, error:profileError } = await supabase
-      .from('profiles')
-      .select('nickname')
-      .eq('id', user.id)
-      .single()
-
-    if (profileError) {
-      console.error(profileError)
-      return
-    }
-
-    setProfile(profileData)*/
+    //const user = session.user 
 
     const { data: leaguesData, error: leaguesError } = await supabase
       .rpc('get_my_leagues_dashboard_v2')
     if (leaguesError) {
       console.error(leaguesError)
+      setLoading(false)
       return
     }
     setLeagues(leaguesData || [])
+    setLoading(false)
   }
+
+  if (loading || leagues === null) {
+    return (
+      <div className="container">
+        <h1 className="text-2xl font-bold">Loading...</h1>
+      </div>
+    )
+  }
+
+  if (leagues.length === 0) {
+    return (
+      <div className="container">
+        <h1 className="text-2xl font-bold">
+          Ciao New User
+        </h1>
+
+        <h2 className="text-xl font-semibold">
+          In attesa di entrare nella tua prima league
+        </h2>
+      </div>
+    )
+  }
+
 
   return (
     <div className="container">
 
       <h1 className="text-2xl font-bold">
-        Ciao {leagues[0]?.nickname ?? "New User"}
+        Ciao {leagues[0]?.nickname}
       </h1>
       <br />
 
-  {leagues.length === 0 ? (
-    <h2 className="text-xl font-semibold">
-      In attesa di entrare nella tua prima league
-    </h2>
-  ) : (
-        leagues.map((league) => (
+        {leagues.map((league) => (
           <div
             key={league.league_id}
             className="leagueCard"
@@ -108,7 +113,7 @@ export default function PlayPage() {
             )}
           </div>
         ))
-      )}
+      }
     </div>
   )
 }
