@@ -3,7 +3,8 @@
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient"
+import { supabase } from "@/lib/supabaseClient";
+import Header from "@/components/Header";
 
 
 export default function MyApp() {
@@ -44,29 +45,27 @@ export default function MyApp() {
     }
 
     return (
-        <div>
-            <div className="centered-logo-container">
-                <a href="#">
-                    <img src="/uuc_app_logo_v0.png" alt="UUC logo" className="img-max-h-150px" />
-                </a>
-            </div>
-        <h1 className="centered-h1">Signup to UUC App</h1>
+        <>
+        <Header />
+            <div style={{ paddingTop: "30px" }}>
+                <h1 className="centered-h1">Signup to UUC App</h1>
 
-        <div className="container">
-            <div className="card">
-            <form onSubmit={signup}>
-                <input className="contentSignup" type="text" autoComplete="nickname" placeholder="nickname" onChange={e=>setNickname(e.target.value)} />
-                <br />
-                <input className="contentSignup" type="email" autoComplete="email" placeholder="email" onChange={e=>setEmail(e.target.value)} />
-                <br />
-                <input className="contentSignup" type="password" autoComplete="new-password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
-                <br />
-                <input className="contentSignup" type="password" autoComplete="new-password" placeholder="Retype password" onChange={e=>setConfirmPW(e.target.value)} />
-                <br />
-                <button className="playBtn" type="submit">Signup</button>
-            </form>
+            <div className="container">
+                <div className="card">
+                <form onSubmit={signup}>
+                    <input className="contentSignup" type="text" autoComplete="nickname" placeholder="nickname" onChange={e=>setNickname(e.target.value)} />
+                    <br />
+                    <input className="contentSignup" type="email" autoComplete="email" placeholder="email" onChange={e=>setEmail(e.target.value)} />
+                    <br />
+                    <input className="contentSignup" type="password" autoComplete="new-password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
+                    <br />
+                    <input className="contentSignup" type="password" autoComplete="new-password" placeholder="Retype password" onChange={e=>setConfirmPW(e.target.value)} />
+                    <br />
+                    <button className="playBtn" type="submit">Signup</button>
+                </form>
+                </div>
             </div>
-        </div>
-        </div>
+            </div>
+        </>
     );
 }
