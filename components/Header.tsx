@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="header">
       <div className="headerContent">
-        <Link href="/" className="logoLink">
+        <Link href="/play" className="logoLink">
           <img
             src="/uuc_app_logo_v0.png"
             alt="UUC App"
