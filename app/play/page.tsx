@@ -84,7 +84,7 @@ export default function PlayPage() {
             className="leagueCard"
               onClick={() =>
               setExpandedLeague(
-                expandedLeague === league.id ? null : league.id
+                expandedLeague === league.league_id ? null : league.league_id
               )
             }
           >
@@ -94,7 +94,7 @@ export default function PlayPage() {
             </h2>
             
             {/* ONLY WHEN OPEN */}
-            {expandedLeague === league.id && (
+            {expandedLeague === league.league_id && (
             <>
               <div>Round: {league.rounds_count}</div>
               <div>Giocatori: {league.total_players}</div>
