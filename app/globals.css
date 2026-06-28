@@ -277,7 +277,7 @@ a {
 }
 
 .headerLogo {
-  height: 46px;
+  height: 80px; /*old 46px*/
   width: auto;
 }
 
