@@ -80,10 +80,23 @@ export default function MatrixPage({ params }: any) {
     return bVal.localeCompare(aVal) // orden alfabético
   })
 
-  function getCellColor(player: any, round: number, cell: Row | undefined) {
-    if (!player.elim_round) return ""
-    if (round >= player.elim_round) return "cellRed"
-    if (cell && cell.is_win === false) return "cellRed"
+  function getCellColor(player: any, round: number, cell: Row |undefined) {
+    if (player.elim_round != null && round >= player.elim_round) {
+      return "cellRed"
+    }
+
+    if (cell?.is_win === true) {
+      return "cellGreen"
+    }
+
+    if (cell?.is_win === false) {
+      return "cellRed"
+    }
+
+    if (cell?.is_win == null) {
+      return "cellPending"
+    }
+
     return ""
   }
 
@@ -173,6 +186,16 @@ export default function MatrixPage({ params }: any) {
         .cellRed {
           background: #ffcccc;
           color: red;
+        }
+
+        .cellGreen {
+          background: #d2f7c5;
+          color: green;
+        }
+
+        .cellPending {
+          background: black;
+          color: white;
         }
       `}</style>
 
