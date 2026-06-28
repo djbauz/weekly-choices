@@ -276,3 +276,51 @@ a {
 .headerLink:hover {
   color: white;
 }
+
+/* =========================
+   NAV
+========================= */
+
+.nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.navItem {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.navItem:hover {
+  opacity: 1;
+}
+
+/* USER AREA */
+.userArea {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userEmail {
+  color: white;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.logoutBtn {
+  background: #333;
+  color: white;
+  border: 1px solid #555;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background: #444;
+}
