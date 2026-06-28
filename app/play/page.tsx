@@ -10,6 +10,7 @@ export default function PlayPage() {
   const [profile, setProfile] = useState<any>(null)
   const [leagues, setLeagues] = useState<any[]>([])
   const router = useRouter()
+  const [expandedLeague, setExpandedLeague] = useState<string | null>(null);
 
   useEffect(() => {
     loadData()
@@ -75,26 +76,36 @@ export default function PlayPage() {
         leagues.map((league) => (
           <div
             key={league.league_id}
-            className="card"
+            className="leagueCard"
+              onClick={() =>
+              setExpandedLeague(
+                expandedLeague === league.id ? null : league.id
+              )
+            }
           >
+            {/* ALWAYS VISIBLE */}
             <h2 className="text-xl font-semibold">
               {league.league_name}
             </h2>
+            
+            {/* ONLY WHEN OPEN */}
+            {expandedLeague === league.id && (
+            <>
+              <div>Round: {league.rounds_count}</div>
+              <div>Giocatori: {league.total_players}</div>
+              <div>Attivi: {league.active_players}</div>
+              <div>Eliminati: {league.eliminated_players}</div>
+              <div>Status: {league.user_status}</div>
 
-            <div>Round: {league.rounds_count}</div>
-            <div>Giocatori: {league.total_players}</div>
-            <div>Attivi: {league.active_players}</div>
-            <div>Eliminati: {league.eliminated_players}</div>
-
-            <div>Status: {league.user_status}</div>
-
-            <button className="playBtn" onClick={() => openDashboard(league.league_id)}>
-              Partite
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
-              Rounds
-            </button>
+              <button className="playBtn" onClick={() => openDashboard(league.league_id)}>
+                Partite
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button className="playBtn" onClick={() => openMatrix(league.league_id)}>
+                Rounds
+              </button>
+            </>
+            )}
           </div>
         ))
       )}
