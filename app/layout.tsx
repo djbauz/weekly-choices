@@ -26,14 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <header className="appHeader">
-        <h1>UUC App</h1>
-      </header>
-      {/* <body className={`${geistSans.variable} ${geistMono.variable}`}> */}
-      <main>
+      <body>
+        <Header />
         {children}
-      </main>
-      {/* </body> */}
+      </body>
     </html>
   );
 }
