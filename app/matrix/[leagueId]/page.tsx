@@ -101,7 +101,7 @@ export default function MatrixPage({ params }: any) {
   }
 
   return (
-    <div className="page">
+    <div className="container">
 
       <h1>Matrice</h1>
       <h2>{leagueName}</h2>
