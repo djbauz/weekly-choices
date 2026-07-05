@@ -93,7 +93,10 @@ export default function PlayPage() {
             }
           >
             {/* ALWAYS VISIBLE */}
-            <h2 className="text-xl font-semibold">
+            <h2 className="text-xl font-semibold flex items-center gap-2">
+              {league.user_status === "winner" && (
+                <span className="text-yellow-500">🏆</span>
+              )}
               {league.league_name}
             </h2>
             
