@@ -81,7 +81,11 @@ export default function PlayPage() {
         {leagues.map((league) => (
           <div
             key={league.league_id}
-            className="leagueCard"
+            className={
+              league.league_status === "finished"
+              ? "leagueCard finished"
+              : "leagueCard"
+            }
               onClick={() =>
               setExpandedLeague(
                 expandedLeague === league.league_id ? null : league.league_id
