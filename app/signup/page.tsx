@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 
 
 export default function MyApp() {
@@ -46,7 +46,7 @@ export default function MyApp() {
 
     return (
         <>
-        <Header />
+        {/* <Header /> */}
             <div style={{ paddingTop: "30px" }}>
                 <h1 className="centered-h1">Signup to UUC App</h1>
 
