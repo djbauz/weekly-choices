@@ -48,10 +48,10 @@ export default function MyApp() {
             <div className="container">
                 <div className="card">
                 <form onSubmit={signup}>
-                    <input className="contentSignup" type="text" autoComplete="nickname" placeholder="nickname" onChange={e=>setNickname(e.target.value)} />
+                    {/* <input className="contentSignup" type="text" autoComplete="nickname" placeholder="nickname" onChange={e=>setNickname(e.target.value)} />
                     <br />
                     <input className="contentSignup" type="email" autoComplete="email" placeholder="email" onChange={e=>setEmail(e.target.value)} />
-                    <br />
+                    <br /> */}
                     <input className="contentSignup" type="password" autoComplete="new-password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
                     <br />
                     <input className="contentSignup" type="password" autoComplete="new-password" placeholder="Retype password" onChange={e=>setConfirmPW(e.target.value)} />
