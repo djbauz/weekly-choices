@@ -20,7 +20,7 @@ export default function Home() {
     router.push("/signup")
   }
 
-  const resetpw = () => {
+  const resetpw = async () => {
     const emailValue = email.trim().toLowerCase();
 
     if (!emailValue) {
@@ -28,8 +28,20 @@ export default function Home() {
       return;
     }
 
-    router.push(`/resetpw?email=${encodeURIComponent(emailValue)}`)
-  }
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      emailValue,
+      {
+        redirectTo: `${window.location.origin}/resetpw`,
+      }
+    );
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    alert("If this email is registered, you will receive a password reset email.");
+  };
 
   const login = async () => {
     const emailValue = email.trim().toLowerCase();

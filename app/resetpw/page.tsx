@@ -10,6 +10,10 @@ import { useSearchParams } from "next/navigation";
 export default function MyApp() {
     const router = useRouter();
 
+    const searchParams = useSearchParams();
+    const email = searchParams.get("email");
+    console.log(email);
+
     //const [email,setEmail]=useState("")
     const [new_password,setPassword]=useState("")
     const [confirmPw, setConfirmPW]=useState("")
@@ -17,11 +21,9 @@ export default function MyApp() {
 
     const signup = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        const searchParams = useSearchParams();
-        const email = searchParams.get("email");
-        console.log(email);
         
+        console.log("Email:", email);
+
         //const emailValue = email.trim().toLowerCase();
         //const nicknameValue = nickname.trim();
 
