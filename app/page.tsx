@@ -20,6 +20,10 @@ export default function Home() {
     router.push("/signup")
   }
 
+  const resetpw = () => {
+    router.push("/resetpw")
+  }
+
   const login = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
@@ -54,6 +58,9 @@ export default function Home() {
           <div className="buttonRow">
             <button type="submit" className="playBtn">Login</button>
             <button type="button" className="playBtn" onClick={signup}>Signup</button>
+          </div>
+          <div className="buttonRow">
+            <button type="button" className="playBtn" onClick={resetpw}>Reset PW </button>
           </div>
         </form>
       </div>
