@@ -10,7 +10,10 @@ export default function Home() {
   
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
+  const emailValue = email.trim().toLowerCase();
 
+  if (!emailValue) return alert("Email is required");
+  
   useEffect(() => {
     setEmail("");
     setPassword("");
