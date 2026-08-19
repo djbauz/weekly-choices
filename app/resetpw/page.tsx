@@ -10,18 +10,12 @@ import { useSearchParams } from "next/navigation";
 export default function MyApp() {
     const router = useRouter();
 
-    const searchParams = useSearchParams();
-    const email = searchParams.get("email");
-    console.log(email);
-
     const [new_password,setPassword]=useState("")
     const [confirmPw, setConfirmPW]=useState("")
 
     const resetpwd = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        console.log("Email:", email);
-
         if (new_password.length < 8 || new_password.length > 20) return alert("Password must be between 8 and 20 characters long");
         if (new_password !== confirmPw) return alert("Passwords don't match");
 
