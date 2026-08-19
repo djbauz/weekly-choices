@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { useSearchParams } from "next/navigation";
 
 
 export default function MyApp() {
@@ -17,6 +18,10 @@ export default function MyApp() {
     const signup = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const searchParams = useSearchParams();
+        const email = searchParams.get("email");
+        console.log(email);
+        
         //const emailValue = email.trim().toLowerCase();
         //const nicknameValue = nickname.trim();
 

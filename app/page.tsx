@@ -10,9 +10,6 @@ export default function Home() {
   
   const [email,setEmail]=useState("")
   const [password,setPassword]=useState("")
-  const emailValue = email.trim().toLowerCase();
-
-  if (!emailValue) return alert("Email is required");
   
   useEffect(() => {
     setEmail("");
@@ -24,13 +21,30 @@ export default function Home() {
   }
 
   const resetpw = () => {
-    router.push("/resetpw")
+    const emailValue = email.trim().toLowerCase();
+
+    if (!emailValue) {
+      alert("Email is required");
+      return;
+    }
+
+    router.push(`/resetpw?email=${encodeURIComponent(emailValue)}`)
   }
 
   const login = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const emailValue = email.trim().toLowerCase();
 
-    if(error){
+    if (!emailValue) {
+      alert("Email is required");
+      return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: emailValue,
+      password
+    })
+
+    if (error) {
       alert(error.message)
     } else {
       location.href = "/play"
