@@ -393,7 +393,7 @@ export default function LeagueAdminPage() {
           <div>
 
             <h3 className="font-semibold">
-              Inviti inviati
+              Richieste inviate
             </h3>
 
             <br />
