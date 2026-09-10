@@ -37,6 +37,21 @@ export default function Admin(){
     alert(JSON.stringify(data))
   }
 
+  async function testGetPendingInvitations(){
+    const { data, error } = await supabase.rpc('get_my_pending_invitations')
+    
+    if(error){
+      console.error(error)
+      alert(error.message)
+      return
+    }
+
+    console.log("Pending Invitation data:", data)
+
+    alert(JSON.stringify(data))
+
+  }
+
   async function checkAdmin(){
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -101,13 +116,21 @@ export default function Admin(){
       ))}
 
       {users.length===0 && <p>Nessun utente in attesa</p>}
-
+      <p></p>
       <h2>test admin league functions</h2>
       <div>
         <button type="button" className="playBtn" onClick={testInvite}>
           Invite_to_league
         </button>
       </div>
+      
+      <p></p>
+      <div>
+        <button type="button" className="playBtn" onClick={testGetPendingInvitations}>
+          GetPendingInvitations
+        </button>
+      </div>
+
     </div>
   )
 }
