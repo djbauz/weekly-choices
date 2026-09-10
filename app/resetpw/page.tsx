@@ -36,10 +36,10 @@ export default function MyApp() {
         <>
         {/* <Header /> */}
             <div style={{ paddingTop: "30px" }}>
-                <h1 className="centered-h1">Reset your Password</h1>
 
             <div className="container">
-                <div className="card">
+                <h1>Reset your Password</h1>
+                <div className="card loginCard">
                 <form onSubmit={resetpwd}>
                     <input className="contentSignup" type="password" autoComplete="new-password" placeholder="password" onChange={e=>setPassword(e.target.value)} />
                     <br />

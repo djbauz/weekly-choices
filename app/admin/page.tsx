@@ -19,6 +19,24 @@ export default function Admin(){
     setLoading(false)
   }
 
+  async function testInvite(){
+
+    const { data, error } = await supabase.rpc('invite_to_league', {
+      p_league_id: 'd67c53f4-690c-4a3b-9986-0b16eef3f48d',
+      p_email: 'elcorreodematteo@gmail.com'
+    })
+
+    if(error){
+      console.error(error)
+      alert(error.message)
+      return
+    }
+
+    console.log("Invitation created:", data)
+
+    alert(JSON.stringify(data))
+  }
+
   async function checkAdmin(){
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -83,6 +101,13 @@ export default function Admin(){
       ))}
 
       {users.length===0 && <p>Nessun utente in attesa</p>}
+
+      <h2>test admin league functions</h2>
+      <div>
+        <button type="button" className="playBtn" onClick={testInvite}>
+          Invite_to_league
+        </button>
+      </div>
     </div>
   )
 }
