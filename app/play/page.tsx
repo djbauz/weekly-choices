@@ -145,11 +145,6 @@ export default function PlayPage() {
 
         <div className="invitationContainer">
 
-          <h2 className="text-xl font-semibold">
-            Inviti pendenti
-          </h2>
-
-
           {invitations.map((invitation) => (
 
             <div
