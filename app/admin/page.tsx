@@ -23,7 +23,7 @@ export default function Admin(){
 
     const { data, error } = await supabase.rpc('invite_to_league', {
       p_league_id: 'd67c53f4-690c-4a3b-9986-0b16eef3f48d',
-      p_email: 'elcorreodematteo@gmail.com'
+      p_email: 'djbauz@gmail.com'
     })
 
     if(error){
