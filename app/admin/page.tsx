@@ -17,15 +17,13 @@ export default function Admin(){
     await checkAdmin()
     await load()
     setLoading(false)
-    const {data,error} = await supabase.rpc("get_league_admin_data")
-      console.log(data)
   }
 
   async function testInvite(){
 
     const { data, error } = await supabase.rpc('invite_to_league', {
       p_league_id: 'd67c53f4-690c-4a3b-9986-0b16eef3f48d',
-      p_email: 'djbauz@gmail.com'
+      p_email: 'test@gmail.com'
     })
 
     if(error){
