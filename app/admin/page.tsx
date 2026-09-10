@@ -17,6 +17,8 @@ export default function Admin(){
     await checkAdmin()
     await load()
     setLoading(false)
+    const {data,error} = await supabase.rpc("get_league_admin_data")
+      console.log(data)
   }
 
   async function testInvite(){
@@ -52,6 +54,9 @@ export default function Admin(){
 
   }
 
+
+
+  
   async function checkAdmin(){
     const { data: { user } } = await supabase.auth.getUser()
 
