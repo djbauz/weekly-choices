@@ -59,8 +59,7 @@ export default function LeagueAdminPage() {
 
     setData(adminData)
 
-    // If the league already has a start date,
-    // select the corresponding week if present.
+
     if (adminData?.league?.start_date) {
 
       const matchingWeek =
@@ -79,13 +78,28 @@ export default function LeagueAdminPage() {
   }
 
 
+  function formatDate(date: string) {
+
+    return new Date(date).toLocaleDateString(
+      "it-IT",
+      {
+        day: "2-digit",
+        month: "2-digit"
+      }
+    )
+
+  }
+
+
   if (loading) {
 
     return (
       <div className="container">
+
         <h1 className="text-2xl font-bold">
           Loading...
         </h1>
+
       </div>
     )
 
@@ -98,13 +112,13 @@ export default function LeagueAdminPage() {
       <div className="container">
 
         <h1 className="text-2xl font-bold">
-          Amministrare Lega
+          Amministrazione lega
         </h1>
 
         <br />
 
         <div className="invitationCard">
-          {error || "Non è stato possibile caricare i dati della lega."}
+          {error || "Impossibile caricare i dati della lega."}
         </div>
 
       </div>
@@ -121,6 +135,7 @@ export default function LeagueAdminPage() {
   return (
     <div className="container">
 
+
       {/* HEADER */}
 
       <div className="flex items-center justify-between">
@@ -132,7 +147,7 @@ export default function LeagueAdminPage() {
           </h1>
 
           <div className="text-sm opacity-70">
-            Amministrare lega
+            Amministrazione lega
           </div>
 
         </div>
@@ -142,7 +157,7 @@ export default function LeagueAdminPage() {
           className="playBtn"
           onClick={() => router.push("/play")}
         >
-          Volver
+          Indietro
         </button>
 
       </div>
@@ -151,7 +166,7 @@ export default function LeagueAdminPage() {
       <br />
 
 
-      {/* LEAGUE STATUS */}
+      {/* STATUS */}
 
       <div className="leagueCard">
 
@@ -160,11 +175,11 @@ export default function LeagueAdminPage() {
           <div>
 
             <h2 className="text-xl font-semibold">
-              Status della lega
+              Stato della lega
             </h2>
 
             <div className="text-sm opacity-70">
-              La lega è ancora in preparazione.
+              La lega è ancora in fase di preparazione.
             </div>
 
           </div>
@@ -182,7 +197,7 @@ export default function LeagueAdminPage() {
       <br />
 
 
-      {/* LEAGUE SETTINGS */}
+      {/* CONFIGURATION */}
 
       <div className="leagueCard">
 
@@ -193,9 +208,9 @@ export default function LeagueAdminPage() {
         <br />
 
 
-        <label className="block font-semibold">
+        <h3 className="font-semibold">
           Nome della lega
-        </label>
+        </h3>
 
         <br />
 
@@ -211,20 +226,20 @@ export default function LeagueAdminPage() {
         <br />
 
 
-        <label className="block font-semibold">
+        <h3 className="font-semibold">
           Settimana d'inizio
-        </label>
+        </h3>
 
         <div className="text-sm opacity-70">
-          La lega inizierà una delle prossime settimane disponibili.
+          La lega inizierà con una delle prossime settimane disponibili.
         </div>
 
         <br />
 
 
-        <div className="space-y-2">
+        <div>
 
-          {weeks.map((week: any) => {
+          {weeks.map((week: any, index: number) => {
 
             const selected = selectedWeek === week.id
 
@@ -247,11 +262,13 @@ export default function LeagueAdminPage() {
                   <div>
 
                     <strong>
-                      {week.name || `Week ${week.number}`}
+                      Week {index + 1}
                     </strong>
 
                     <div className="text-sm opacity-70">
-                      {new Date(week.start_at).toLocaleString("it-IT")}
+                      {formatDate(week.start_at)}
+                      {" - "}
+                      {formatDate(week.end_at)}
                     </div>
 
                   </div>
@@ -281,7 +298,7 @@ export default function LeagueAdminPage() {
           className="playBtn"
           disabled={!selectedWeek}
         >
-          Salva data d'inizio
+          Salva settimana d'inizio
         </button>
 
       </div>
@@ -303,7 +320,7 @@ export default function LeagueAdminPage() {
             </h2>
 
             <div className="text-sm opacity-70">
-              {data.pending_invitations} Inviti in attesa
+              {data.pending_invitations} inviti pendenti
             </div>
 
           </div>
@@ -331,9 +348,9 @@ export default function LeagueAdminPage() {
 
         <div>
 
-          <label className="block font-semibold">
+          <h3 className="font-semibold">
             Invita giocatore
-          </label>
+          </h3>
 
           <br />
 
@@ -341,7 +358,7 @@ export default function LeagueAdminPage() {
 
             <input
               type="email"
-              placeholder="email@ejemplo.com"
+              placeholder="email@esempio.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={
@@ -358,7 +375,7 @@ export default function LeagueAdminPage() {
                 data.available_invitations <= 0
               }
             >
-              Invitare
+              Invita
             </button>
 
           </div>
@@ -376,13 +393,13 @@ export default function LeagueAdminPage() {
           <div>
 
             <h3 className="font-semibold">
-              Richieste inviate
+              Inviti inviati
             </h3>
 
             <br />
 
 
-            <div className="space-y-2">
+            <div>
 
               {invitations.map((invitation: any) => (
 
@@ -407,9 +424,7 @@ export default function LeagueAdminPage() {
                   <div className="text-sm opacity-70">
 
                     {invitation.created_at
-                      ? new Date(
-                          invitation.created_at
-                        ).toLocaleDateString("it-IT")
+                      ? formatDate(invitation.created_at)
                       : ""
                     }
 
@@ -429,7 +444,7 @@ export default function LeagueAdminPage() {
         {invitations.length === 0 && (
 
           <div className="text-sm opacity-70">
-            Non sono ancora state inviate richieste.
+            Non sono ancora stati inviati inviti.
           </div>
 
         )}
