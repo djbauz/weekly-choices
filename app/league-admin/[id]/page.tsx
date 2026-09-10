@@ -329,11 +329,7 @@ export default function LeagueAdminPage() {
           <div className="text-right">
 
             <div className="text-2xl font-bold">
-              {data.available_invitations} / {data.max_invitations}
-            </div>
-
-            <div className="text-sm opacity-70">
-              disponibili
+              {data.available_invitations} / {data.max_invitations} disponibili
             </div>
 
           </div>
