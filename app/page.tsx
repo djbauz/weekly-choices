@@ -88,9 +88,13 @@ export default function Home() {
             <button type="submit" className="playBtn">Login</button>
             <button type="button" className="playBtn" onClick={signup}>Signup</button>
           </div>
-          <div className="buttonRow">
-            <button type="button" className="playBtn" onClick={resetpw}>Reset PW </button>
+
+          <div className="text-center mt-3"> 
+            <button type="button" onClick={resetpw} className="underline text-sm" > 
+              Password dimenticata?
+            </button> 
           </div>
+
         </form>
       </div>
     </div>

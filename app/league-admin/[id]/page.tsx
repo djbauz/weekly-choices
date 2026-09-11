@@ -19,6 +19,8 @@ export default function LeagueAdminPage() {
   const [selectedWeek, setSelectedWeek] = useState<string | null>(null)
   const [email, setEmail] = useState("")
 
+  const [leagueName, setLeagueName] = useState("")
+  const [savingName, setSavingName] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -58,6 +60,7 @@ export default function LeagueAdminPage() {
 
 
     setData(adminData)
+    setLeagueName(adminData?.league?.name || "")
 
 
     if (adminData?.league?.start_date) {
@@ -75,6 +78,39 @@ export default function LeagueAdminPage() {
     }
 
     setLoading(false)
+  }
+
+  async function saveLeagueName() {
+
+    if (league.status !== "draft") {
+      return
+    }
+
+    const name = leagueName.trim()
+
+    if (!name) {
+      alert("Inserisci il nome della lega")
+      return
+    }
+
+    setSavingName(true)
+
+    const { error } = await supabase
+      .rpc("update_league_name", {
+        p_league_id: leagueId,
+        p_name: name
+      })
+
+    if (error) {
+      console.error(error)
+      alert(error.message)
+      setSavingName(false)
+      return
+    }
+
+    await loadData()
+
+    setSavingName(false)
   }
 
 
@@ -95,11 +131,9 @@ export default function LeagueAdminPage() {
 
     return (
       <div className="container">
-
         <h1 className="text-2xl font-bold">
           Loading...
         </h1>
-
       </div>
     )
 
@@ -107,20 +141,15 @@ export default function LeagueAdminPage() {
 
 
   if (error || !data) {
-
     return (
       <div className="container">
-
         <h1 className="text-2xl font-bold">
           Amministrazione lega
         </h1>
-
         <br />
-
         <div className="invitationCard">
           {error || "Impossibile caricare i dati della lega."}
         </div>
-
       </div>
     )
 
@@ -135,116 +164,95 @@ export default function LeagueAdminPage() {
   return (
     <div className="container">
 
-
       {/* HEADER */}
-
       <div className="flex items-center justify-between">
-
         <div>
-
           <h1 className="text-2xl font-bold">
             {league.name || "Nuova lega"}
           </h1>
-
           <div className="text-sm opacity-70">
             Amministrazione lega
           </div>
-
         </div>
-
-
         <button
           className="playBtn"
           onClick={() => router.push("/play")}
         >
           Indietro
         </button>
-
       </div>
-
 
       <br />
 
-
       {/* STATUS */}
-
       <div className="leagueCard">
-
         <div className="flex items-center justify-between">
-
           <div>
-
             <h2 className="text-xl font-semibold">
               Stato della lega
             </h2>
-
             <div className="text-sm opacity-70">
               La lega è ancora in fase di preparazione.
             </div>
-
           </div>
-
-
           <div className="font-semibold">
             {league.status?.toUpperCase()}
           </div>
-
         </div>
-
       </div>
-
 
       <br />
 
-
       {/* CONFIGURATION */}
-
       <div className="leagueCard">
-
         <h2 className="text-xl font-semibold">
           Configurazione
         </h2>
-
         <br />
-
-
         <h3 className="font-semibold">
           Nome della lega
         </h3>
 
         <br />
 
-        <input
-          type="text"
-          value={league.name || ""}
-          disabled
-          className="w-full p-2 rounded border"
-        />
+        <div className="flex gap-2">
 
+          <input
+            type="text"
+            value={leagueName}
+            onChange={(e) => setLeagueName(e.target.value)}
+            disabled={league.status !== "draft" || savingName}
+            className="flex-1 p-2 rounded border"
+          />
 
+          <button
+            className="playBtn"
+            onClick={saveLeagueName}
+            disabled={
+              league.status !== "draft" ||
+              savingName ||
+              !leagueName.trim()
+            }
+          >
+            {savingName ? "Salvataggio..." : "Salva"}
+          </button>
+
+        </div>
         <br />
         <br />
-
 
         <h3 className="font-semibold">
           Settimana d'inizio
         </h3>
-
         <div className="text-sm opacity-70">
           La lega inizierà con una delle prossime settimane disponibili.
         </div>
-
         <br />
-
-
         <div>
 
           {weeks.map((week: any, index: number) => {
-
             const selected = selectedWeek === week.id
-
             return (
-
               <div
                 key={week.id}
                 className="leagueCard"
@@ -256,43 +264,30 @@ export default function LeagueAdminPage() {
                     : undefined
                 }}
               >
-
                 <div className="flex items-center justify-between">
-
                   <div>
-
                     <strong>
                       Week {index + 1}
                     </strong>
-
                     <div className="text-sm opacity-70">
                       {formatDate(week.start_at)}
                       {" - "}
                       {formatDate(week.end_at)}
                     </div>
-
                   </div>
-
 
                   {selected && (
                     <span className="font-semibold">
                       ✓
                     </span>
                   )}
-
                 </div>
-
               </div>
-
             )
-
           })}
-
         </div>
 
-
         <br />
-
 
         <button
           className="playBtn"
@@ -300,58 +295,35 @@ export default function LeagueAdminPage() {
         >
           Salva settimana d'inizio
         </button>
-
       </div>
-
-
       <br />
 
-
       {/* INVITATIONS */}
-
       <div className="leagueCard">
-
         <div className="flex items-center justify-between">
-
           <div>
-
             <h2 className="text-xl font-semibold">
               Inviti
             </h2>
-
             <div className="text-sm opacity-70">
               {data.pending_invitations} inviti pendenti
             </div>
-
           </div>
-
-
           <div className="text-right">
-
             <div className="text-2xl font-bold">
               {data.available_invitations} / {data.max_invitations} disponibili
             </div>
-
           </div>
-
         </div>
-
-
         <br />
 
-
         {/* SEND INVITATION */}
-
         <div>
-
           <h3 className="font-semibold">
             Invita giocatore
           </h3>
-
           <br />
-
           <div className="flex gap-2">
-
             <input
               type="email"
               placeholder="email@esempio.com"
@@ -363,7 +335,6 @@ export default function LeagueAdminPage() {
               className="flex-1 p-2 rounded border"
             />
 
-
             <button
               className="playBtn"
               disabled={
@@ -373,80 +344,52 @@ export default function LeagueAdminPage() {
             >
               Invita
             </button>
-
           </div>
-
         </div>
-
-
         <br />
-
 
         {/* INVITATION LIST */}
 
         {invitations.length > 0 && (
-
           <div>
-
             <h3 className="font-semibold">
               Richieste inviate
             </h3>
-
             <br />
-
-
             <div>
-
               {invitations.map((invitation: any) => (
-
                 <div
                   key={invitation.id}
                   className="invitationCard"
                 >
-
                   <div>
-
                     <strong>
                       {invitation.email}
                     </strong>
-
                     <div className="text-sm opacity-70">
                       {invitation.status}
                     </div>
-
                   </div>
 
-
                   <div className="text-sm opacity-70">
-
                     {invitation.created_at
                       ? formatDate(invitation.created_at)
                       : ""
                     }
-
                   </div>
-
                 </div>
-
               ))}
-
             </div>
-
           </div>
-
         )}
 
-
         {invitations.length === 0 && (
-
           <div className="text-sm opacity-70">
             Non sono ancora stati inviati inviti.
           </div>
-
         )}
 
       </div>
-
     </div>
   )
 }
