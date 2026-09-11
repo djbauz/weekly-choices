@@ -93,7 +93,7 @@ export default function Home() {
             <button
               type="button"
               onClick={resetpw}
-              className="bg-transparent border-0 p-0 text-black italic underline text-sm"
+              className="resetPasswordLink"
             >
               Password dimenticata?
             </button>

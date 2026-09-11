@@ -250,6 +250,25 @@ a {
   margin: 10px 0;
 }
 
+.resetPasswordLink {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #000;
+  font-family: inherit;
+  font-size: 13px;
+  font-style: italic;
+  text-align: right;
+  cursor: pointer;
+}
+
+.resetPasswordLink:hover {
+  text-decoration: underline;
+}
+
 .centered-logo-container {
   display: flex;
   justify-content: center;
