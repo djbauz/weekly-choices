@@ -86,13 +86,17 @@ export default function Home() {
 
           <div className="buttonRow">
             <button type="submit" className="playBtn">Login</button>
-            <button type="button" className="playBtn" onClick={signup}>Signup</button>
+            <button type="button" className="playBtn" onClick={signup}>Registrati</button>
           </div>
 
-          <div className="text-center mt-3"> 
-            <button type="button" onClick={resetpw} className="underline text-sm" > 
+          <div className="w-full text-right mt-3">
+            <button
+              type="button"
+              onClick={resetpw}
+              className="bg-transparent border-0 p-0 text-black italic underline text-sm"
+            >
               Password dimenticata?
-            </button> 
+            </button>
           </div>
 
         </form>
