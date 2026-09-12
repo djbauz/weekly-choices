@@ -172,14 +172,11 @@ export default function LeagueAdminPage() {
           </h1>
           <div className="text-sm opacity-70">
             Amministrazione lega
-            <div>
-              <ol>
-                <li>1. Scegli il nome della tua lega</li>
-                <li>2. Scegli la data d'inizio</li>
-                <li>3. Invita i tuoi amici a partecipare</li>
-                <li>4. Apri ufficialmente la lega</li>
-              </ol>
-            </div>     
+            <br />
+            1. Scegli il nome della tua lega
+            2. Scegli la data d'inizio
+            3. Invita i tuoi amici a partecipare
+            4. Apri ufficialmente la lega
           </div>
         </div>
         <button
