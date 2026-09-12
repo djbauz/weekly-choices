@@ -22,7 +22,7 @@ export default function Admin(){
   async function testInvite(){
 
     const { data, error } = await supabase.rpc('invite_to_league', {
-      p_league_id: 'd67c53f4-690c-4a3b-9986-0b16eef3f48d',
+      p_league_id: 'test-league-id',
       p_email: 'test@gmail.com'
     })
 
@@ -52,7 +52,23 @@ export default function Admin(){
 
   }
 
+  async function testCreateNewLeague(){
+    const { data, error } = await supabase.rpc('assign_league_admin',{
+      p_user_id:'e2170eaf-cfcd-464a-a7fb-0b73562ad824',
+      p_max_invitations:'40'
+    })
+    
+    if(error){
+      console.error(error)
+      alert(error.message)
+      return
+    }
 
+    console.log("testCreateNewLeague:", data)
+
+    alert(JSON.stringify(data))
+
+  }
 
   
   async function checkAdmin(){
@@ -133,6 +149,14 @@ export default function Admin(){
           GetPendingInvitations
         </button>
       </div>
+
+      <p></p>
+      <div>
+        <button type="button" className="playBtn" onClick={testCreateNewLeague}>
+          testCreateNewLeague
+        </button>
+      </div>
+
 
     </div>
   )
