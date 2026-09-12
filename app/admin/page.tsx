@@ -9,6 +9,9 @@ export default function Admin(){
   const [users,setUsers] = useState<any[]>([])
   const [loading,setLoading] = useState(true)
 
+  const [adminId, setAdminId] = useState("")
+
+
   useEffect(()=>{
     init()
   },[])
@@ -53,11 +56,17 @@ export default function Admin(){
   }
 
   async function testCreateNewLeague(){
-    const { data, error } = await supabase.rpc('assign_league_admin',{
-      p_user_id:'e2170eaf-cfcd-464a-a7fb-0b73562ad824',
-      p_max_invitations:'40'
+
+    if(!adminId){
+      alert("Introduce el UUID del usuario")
+      return
+    }
+
+    const { data, error } = await supabase.rpc('assign_league_admin', {
+      p_user_id: adminId,
+      p_max_invitations: 40
     })
-    
+
     if(error){
       console.error(error)
       alert(error.message)
@@ -66,8 +75,7 @@ export default function Admin(){
 
     console.log("testCreateNewLeague:", data)
 
-    alert(JSON.stringify(data))
-
+    alert(`Nueva liga creada: ${data}`)
   }
 
   
@@ -151,6 +159,23 @@ export default function Admin(){
       </div>
 
       <p></p>
+      <div>
+          <input
+            type="text"
+            value={adminId}
+            onChange={(e) => setAdminId(e.target.value)}
+            placeholder="UUID del usuario"
+            style={{
+              width: "400px",
+              height: "40px",
+              padding: "10px",
+              border: "2px solid red",
+              backgroundColor: "white",
+              color: "black",
+              display: "block"
+            }}
+          />
+      </div>
       <div>
         <button type="button" className="playBtn" onClick={testCreateNewLeague}>
           testCreateNewLeague
