@@ -145,6 +145,10 @@ export default function LeagueAdminPage() {
       <div className="container">
         <h1 className="text-2xl font-bold">
           Amministrazione lega
+          1. Scegli il nome della tua lega
+          2. Scegli la data d'inizio
+          3. Invita i tuoi amici a partecipare
+          4. Apri ufficialmente la lega
         </h1>
         <br />
         <div className="invitationCard">
@@ -212,17 +216,13 @@ export default function LeagueAdminPage() {
         <h3 className="font-semibold">
           Nome della lega
         </h3>
-
-        <br />
-
         <div className="flex gap-2">
-
           <input
             type="text"
             value={leagueName}
             onChange={(e) => setLeagueName(e.target.value)}
             disabled={league.status !== "draft" || savingName}
-            className="flex-1 p-2 rounded border"
+            className="adminInput"
           />
 
           <button
@@ -322,7 +322,6 @@ export default function LeagueAdminPage() {
           <h3 className="font-semibold">
             Invita giocatore
           </h3>
-          <br />
           <div className="flex gap-2">
             <input
               type="email"
@@ -332,7 +331,7 @@ export default function LeagueAdminPage() {
               disabled={
                 data.available_invitations <= 0
               }
-              className="flex-1 p-2 rounded border"
+              className="adminInput"
             />
 
             <button
