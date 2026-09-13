@@ -288,6 +288,12 @@ export default function PlayPage() {
                     Rounds
                   </button>
 
+                  {league.is_league_admin && (
+                    <button onClick={() => router.push(`/league-admin/${league.id}`)}>
+                        Admin
+                    </button>
+                   )}
+
                 </>
 
               )}
