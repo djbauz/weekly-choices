@@ -289,7 +289,10 @@ export default function PlayPage() {
                   </button>
 
                   {league.is_league_admin && (
-                    <button onClick={() => router.push(`/league-admin/${league.id}`)}>
+                    <button 
+                    className="playBtn"
+                    onClick={() => router.push(`/league-admin/${league.id}`)}
+                    >
                         Admin
                     </button>
                    )}
