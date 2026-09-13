@@ -21,6 +21,9 @@ export default function LeagueAdminPage() {
   const [savingWeek, setSavingWeek] = useState(false)
 
   const [email, setEmail] = useState("")
+  const [sendingInvitation, setSendingInvitation] = useState(false)
+  const [invitationMessage, setInvitationMessage] = useState<string | null>(null)
+  const [invitationError, setInvitationError] = useState<string | null>(null)
 
   const [leagueName, setLeagueName] = useState("")
   const [savingName, setSavingName] = useState(false)
@@ -168,6 +171,50 @@ export default function LeagueAdminPage() {
     await loadData()
     setSavingWeek(false)
   }
+
+  // ============================================================
+  // SEND INVITATION
+  // ============================================================
+
+  async function sendInvitation() {
+
+    const invitationEmail = email.trim().toLowerCase()
+
+    if (!invitationEmail) {
+      return
+    }
+
+    setSendingInvitation(true)
+    setInvitationMessage(null)
+    setInvitationError(null)
+
+    const { data: invitationData, error } = await supabase
+      .rpc("invite_to_league", {
+        p_league_id: leagueId,
+        p_email: invitationEmail
+      })
+
+    if (error) {
+      console.error(error)
+      setInvitationError(error.message)
+      setSendingInvitation(false)
+      return
+    }
+
+    console.log("Invitation created:", invitationData)
+
+    setEmail("")
+    setInvitationMessage("Invito inviato correttamente.")
+
+    // Recargamos para actualizar:
+    // - número de invitaciones pendientes
+    // - plazas disponibles
+    // - lista de invitaciones
+    await loadData()
+
+    setSendingInvitation(false)
+  }
+
 
   // ============================================================
   // FORMAT DATE
@@ -667,16 +714,31 @@ export default function LeagueAdminPage() {
             />
 
 
-            <button
-              className="playBtn"
-              disabled={
-                !email ||
-                data.available_invitations <= 0
-              }
-            >
-              Invita
-            </button>
+          <button
+            className="playBtn"
+            onClick={sendInvitation}
+            disabled={
+              !email.trim() ||
+              data.available_invitations <= 0 ||
+              sendingInvitation
+            }
+          >
+            {sendingInvitation ? "Invio..." : "Invita"}
+          </button>
           </div>
+
+          {invitationMessage && (
+            <div className="text-sm">
+              {invitationMessage}
+            </div>
+          )}
+
+          {invitationError && (
+            <div className="text-sm">
+              {invitationError}
+            </div>
+          )}
+
         </div>
         <br />
 
