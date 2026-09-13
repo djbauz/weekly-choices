@@ -277,7 +277,6 @@ export default function PlayPage() {
 
                   &nbsp;&nbsp;&nbsp;&nbsp;
 
-
                   <button
                     className="playBtn"
                     onClick={(e) => {
@@ -287,7 +286,8 @@ export default function PlayPage() {
                   >
                     Rounds
                   </button>
-
+                  
+                  &nbsp;&nbsp;&nbsp;&nbsp;
                   {league.is_league_admin && (
                     <button 
                     className="playBtn"
