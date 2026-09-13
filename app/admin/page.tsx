@@ -10,6 +10,7 @@ export default function Admin(){
   const [loading,setLoading] = useState(true)
 
   const [adminId, setAdminId] = useState("")
+  const [maxInvitations, setMaxInvitations] = useState("")
 
 
   useEffect(()=>{
@@ -64,7 +65,7 @@ export default function Admin(){
 
     const { data, error } = await supabase.rpc('assign_league_admin', {
       p_user_id: adminId,
-      p_max_invitations: 40
+      p_max_invitations: maxInvitations
     })
 
     if(error){
@@ -166,7 +167,24 @@ export default function Admin(){
             onChange={(e) => setAdminId(e.target.value)}
             placeholder="UUID del usuario"
             style={{
-              width: "400px",
+              width: "380px",
+              height: "40px",
+              padding: "10px",
+              border: "2px solid red",
+              backgroundColor: "white",
+              color: "black",
+              display: "block"
+            }}
+          />
+      </div>
+      <div>
+          <input
+            type="number"
+            value={maxInvitations}
+            onChange={(e) => setMaxInvitations(e.target.value)}
+            placeholder="max inviti (20, 40, 60)"
+            style={{
+              width: "60px",
               height: "40px",
               padding: "10px",
               border: "2px solid red",
