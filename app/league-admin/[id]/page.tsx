@@ -803,25 +803,29 @@ export default function LeagueAdminPage() {
         {/* ------------------------------------------------------
             Open League
         ------------------------------------------------------ */}
-        <div>
-            <h3 className="font-semibold">
-              Apri la lega
-            </h3>
+      <div className="leagueCard">
+        <div className="flex items-center justify-between">
+          <div>
+              <h3 className="font-semibold">
+                Apri la lega
+              </h3>
 
-            <br />
-              <div className="text-sm opacity-70">
-                Quando sei pronto, fai click sul bottone, e inizia a giocare!
-                ✅ Hai scelto il nome della lega?
-                ✅ Hai selezionato la settimana d'inizio?
-                ✅ Hai invitato tutti i tuoi amici?
-              </div>
-          <button
-            className="playBtn"
-            //onClick= 
-          >
-            INIZIA!
-          </button>
+              <br />
+                <div className="text-sm opacity-70">
+                  Quando sei pronto, fai click sul bottone, e inizia a giocare!<br />
+                  ✅ Hai scelto il nome della lega?<br />
+                  ✅ Hai selezionato la settimana d'inizio?<br />
+                  ✅ Hai invitato tutti i tuoi amici?<br />
+                </div>
+            <button
+              className="playBtn"
+              //onClick= 
+            >
+              INIZIA!
+            </button>
+          </div>
         </div>
+      </div>  
       </div>
     </div>
   )
