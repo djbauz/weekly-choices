@@ -800,6 +800,7 @@ export default function LeagueAdminPage() {
         )}
         <br />
       </div>
+      <br />
 
         {/* ------------------------------------------------------
             Open League
