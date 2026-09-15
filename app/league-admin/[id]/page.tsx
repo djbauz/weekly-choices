@@ -799,6 +799,7 @@ export default function LeagueAdminPage() {
 
         )}
         <br />
+      </div>
 
         {/* ------------------------------------------------------
             Open League
@@ -806,9 +807,9 @@ export default function LeagueAdminPage() {
       <div className="leagueCard">
         <div className="flex items-center justify-between">
           <div>
-              <h3 className="font-semibold">
+              <h2 className="font-semibold">
                 Apri la lega
-              </h3>
+              </h2>
 
               <br />
                 <div className="text-sm opacity-70">
@@ -826,7 +827,8 @@ export default function LeagueAdminPage() {
           </div>
         </div>
       </div>  
-      </div>
+
+
     </div>
   )
 }
