@@ -766,7 +766,6 @@ export default function LeagueAdminPage() {
             </div>
           </div>
         )}
-      </div>
 
       <br />
 
@@ -856,7 +855,7 @@ export default function LeagueAdminPage() {
           </button>
 
         </div>
-
+      </div>
       {/* ======================================================
           INVITATIONS
       ====================================================== */}
