@@ -30,6 +30,10 @@ export default function LeagueAdminPage() {
 
   const [opening, setOpening] = useState(false)
 
+  const [competitions, setCompetitions] = useState<any[]>([])
+  const [selectedCompetitions, setSelectedCompetitions] = useState<number[]>([])
+  const [savingCompetitions, setSavingCompetitions] = useState(false)
+
 
   // ============================================================
   // LOAD DATA
@@ -69,6 +73,33 @@ export default function LeagueAdminPage() {
 
     setData(adminData)
     setLeagueName(adminData?.league?.name || "")
+
+    // ------------------------------------------------------------
+    // COMPETITIONS
+    // ------------------------------------------------------------
+
+    const {
+      data: competitionData,
+      error: competitionError
+    } = await supabase
+      .rpc("get_league_competitions", {
+        p_league_id: leagueId
+      })
+
+    if (competitionError) {
+      console.error(competitionError)
+      setError(competitionError.message)
+      setLoading(false)
+      return
+    }
+
+    setCompetitions(competitionData || [])
+
+    setSelectedCompetitions(
+      (competitionData || [])
+        .filter((competition: any) => competition.selected)
+        .map((competition: any) => competition.competition_id)
+    )
 
     // ------------------------------------------------------------
     // Comprobar si la fecha guardada coincide con una de las
@@ -172,6 +203,56 @@ export default function LeagueAdminPage() {
 
     await loadData()
     setSavingWeek(false)
+  }
+
+  // ============================================================
+  // SELECT COMPETITIONS
+  // ============================================================
+
+  function toggleCompetition(competitionId: number) {
+
+    if (!isDraft || savingCompetitions) {
+      return
+    }
+
+    setSelectedCompetitions((current) => {
+
+      if (current.includes(competitionId)) {
+        return current.filter(id => id !== competitionId)
+      }
+
+      return [...current, competitionId]
+    })
+  }
+
+  // ============================================================
+  // SAVE SELECTED COMPETITIONS
+  // ============================================================
+
+  async function saveLeagueCompetitions() {
+
+    if (!isDraft) {
+      return
+    }
+
+    setSavingCompetitions(true)
+
+    const { error } = await supabase
+      .rpc("set_league_competitions", {
+        p_league_id: leagueId,
+        p_competition_ids: selectedCompetitions
+      })
+
+    if (error) {
+      console.error(error)
+      alert(error.message)
+      setSavingCompetitions(false)
+      return
+    }
+
+    await loadData()
+
+    setSavingCompetitions(false)
   }
 
   // ============================================================
@@ -688,6 +769,93 @@ export default function LeagueAdminPage() {
       </div>
 
       <br />
+
+        {/* ------------------------------------------------------
+            COMPETITIONS
+        ------------------------------------------------------ */}
+
+        <div className="border-t pt-5 mt-5">
+
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold">
+                Competizioni
+              </h3>
+
+              <div className="text-sm opacity-70">
+                Scegli le competizioni della lega.
+              </div>
+            </div>
+
+            <div className="text-sm opacity-70">
+              {selectedCompetitions.length} selezionate
+            </div>
+          </div>
+
+          <br />
+
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+
+            {competitions.map((competition: any) => {
+
+              const selected =
+                selectedCompetitions.includes(
+                  competition.competition_id
+                )
+
+              return (
+                <label
+                  key={competition.competition_id}
+                  className="flex items-center gap-2 cursor-pointer"
+                  style={{
+                    cursor:
+                      isDraft && !savingCompetitions
+                        ? "pointer"
+                        : "default"
+                  }}
+                >
+
+                  <input
+                    type="checkbox"
+                    checked={selected}
+                    onChange={() =>
+                      toggleCompetition(
+                        competition.competition_id
+                      )
+                    }
+                    disabled={
+                      !isDraft ||
+                      savingCompetitions
+                    }
+                  />
+
+                  <span>
+                    {competition.competition_name}
+                  </span>
+
+                </label>
+              )
+            })}
+
+          </div>
+
+          <br />
+
+          <button
+            className="playBtn"
+            onClick={saveLeagueCompetitions}
+            disabled={
+              !isDraft ||
+              savingCompetitions
+            }
+          >
+            {savingCompetitions
+              ? "Salvataggio..."
+              : "Salva competizioni"
+            }
+          </button>
+
+        </div>
 
       {/* ======================================================
           INVITATIONS
