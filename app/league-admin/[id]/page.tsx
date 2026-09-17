@@ -829,9 +829,9 @@ export default function LeagueAdminPage() {
                   />
 
                   <span>
-                    {competition.competition_name}
+                    { competition.competition_name}
                   </span>
-
+                    <br />
                 </label>
               )
             })}
