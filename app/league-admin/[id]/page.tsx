@@ -28,6 +28,8 @@ export default function LeagueAdminPage() {
   const [leagueName, setLeagueName] = useState("")
   const [savingName, setSavingName] = useState(false)
 
+  const [opening, setOpening] = useState(false)
+
 
   // ============================================================
   // LOAD DATA
@@ -213,6 +215,29 @@ export default function LeagueAdminPage() {
     await loadData()
 
     setSendingInvitation(false)
+  }
+
+  // ============================================================
+  // OPEN LEAGUE!
+  // ============================================================
+  async function openLeague() {
+    if (opening) return
+
+    setOpening(true)
+
+    const { error } = await supabase.rpc("open_league", {
+      p_league_id: leagueId,
+    })
+
+    if (error) {
+      console.error(error)
+      alert(error.message)
+      setOpening(false)
+      return
+    }
+
+    // Liga abierta correctamente
+    router.push("/play")
   }
 
 
@@ -748,25 +773,20 @@ export default function LeagueAdminPage() {
         ------------------------------------------------------ */}
 
         {invitations.length > 0 && (
-
           <div>
-
             <h3 className="font-semibold">
               Richieste inviate
             </h3>
 
             <br />
             <div>
-
               {invitations.map((invitation: any) => (
-
                 <div
                   key={invitation.id}
                   className="invitationCard"
                 >
 
                   <div>
-
                     <strong>
                       {invitation.email}
                     </strong>
@@ -774,12 +794,9 @@ export default function LeagueAdminPage() {
                     <div className="text-sm opacity-70">
                       {invitation.status}
                     </div>
-
                   </div>
 
-
                   <div className="text-sm opacity-70">
-
                     {invitation.created_at
                       ? formatDate(invitation.created_at)
                       : ""
@@ -792,7 +809,6 @@ export default function LeagueAdminPage() {
         )}
 
         {invitations.length === 0 && (
-
           <div className="text-sm opacity-70">
             Non sono ancora stati inviati inviti.
           </div>
@@ -802,9 +818,9 @@ export default function LeagueAdminPage() {
       </div>
       <br />
 
-        {/* ------------------------------------------------------
-            Open League
-        ------------------------------------------------------ */}
+      {/* ------------------------------------------------------
+          Open League
+      ------------------------------------------------------ */}
       <div className="leagueCard">
         <div className="flex items-center justify-between">
           <div>
@@ -819,12 +835,15 @@ export default function LeagueAdminPage() {
                   ✅ Hai selezionato la settimana d'inizio?<br />
                   ✅ Hai invitato tutti i tuoi amici?<br />
                 </div>
-            <button
-              className="playBtn"
-              //onClick= 
-            >
-              INIZIA!
-            </button>
+            <div className="flex justify-center mt-6">
+              <button
+                className="playBtn openLeagueBtn"
+                onClick= {openLeague}
+                disabled={opening}
+              >
+                {opening ? "APERTURA..." : "INIZIA!"}
+              </button>
+            </div>
           </div>
         </div>
       </div>  

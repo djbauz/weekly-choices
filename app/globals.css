@@ -257,6 +257,12 @@ a {
   margin: 10px 0;
 }
 
+.openLeagueBtn {
+  font-size: 1.2rem;
+  padding: 14px 45px;
+  min-width: 190px;
+}
+
 .resetPasswordLink {
   display: block;
   width: 100%;
