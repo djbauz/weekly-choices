@@ -793,7 +793,7 @@ export default function LeagueAdminPage() {
 
           <br />
 
-          <div className="flex flex-col gap-y-3">
+          <div className="competitionList">
             {competitions.map((competition: any) => {
 
               const selected =
@@ -804,7 +804,7 @@ export default function LeagueAdminPage() {
               return (
                 <label
                   key={competition.competition_id}
-                  className="flex items-center gap-3 cursor-pointer"
+                  className="competitionOption"
                   style={{
                     cursor:
                       isDraft && !savingCompetitions

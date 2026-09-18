@@ -360,3 +360,16 @@ a {
   font-weight: 500;
   opacity: 0.85;
 }
+
+.competitionList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.competitionOption {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
