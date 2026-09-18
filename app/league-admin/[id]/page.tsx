@@ -688,7 +688,7 @@ export default function LeagueAdminPage() {
 
             {new Date(league.start_date).getTime() <= Date.now() && (
               <div className="text-sm opacity-70">
-                La settimana di inizio selezionata è già trascorsa.
+                ⚠️ La settimana di inizio selezionata è già trascorsa.
                 Seleziona una nuova settimana prima di aprire la lega.
               </div>
             )}
@@ -833,16 +833,16 @@ export default function LeagueAdminPage() {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-semibold">
-                Competizioni
+                Campionati
               </h3>
 
               <div className="text-sm opacity-70">
-                Scegli le competizioni della lega.
+                Scegli i campionati della lega.
               </div>
             </div>
 
             <div className="text-sm opacity-70">
-              {selectedCompetitions.length} selezionate
+              {selectedCompetitions.length} selezionati
             </div>
           </div>
 
