@@ -34,6 +34,7 @@ export default function LeagueAdminPage() {
   const [selectedCompetitions, setSelectedCompetitions] = useState<number[]>([])
   const [savingCompetitions, setSavingCompetitions] = useState(false)
 
+  const [startWeekCheck, setStartWeekCheck] = useState<any>(null)
 
   // ============================================================
   // LOAD DATA
@@ -42,6 +43,10 @@ export default function LeagueAdminPage() {
   useEffect(() => {
     loadData()
   }, [leagueId])
+
+  useEffect(() => {
+    checkStartWeek()
+  }, [data, competitions])
 
   async function loadData() {
     setLoading(true)
@@ -203,6 +208,48 @@ export default function LeagueAdminPage() {
 
     await loadData()
     setSavingWeek(false)
+  }
+
+  // ============================================================
+  // CHECK START WEEK verifica que haya partidos en la semana seleccionada
+  // ============================================================
+
+  async function checkStartWeek() {
+
+    if (
+      !data?.league?.start_date ||
+      competitions.filter((c: any) => c.selected).length === 0
+    ) {
+      setStartWeekCheck(null)
+      return
+    }
+
+    const weeks = data.available_weeks || []
+
+    const matchingWeek = weeks.find(
+      (week: any) =>
+        new Date(week.start_at).getTime() ===
+        new Date(data.league.start_date).getTime()
+    )
+
+    if (!matchingWeek) {
+      setStartWeekCheck(null)
+      return
+    }
+
+    const { data: result, error } = await supabase
+      .rpc("check_league_start_week", {
+        p_league_id: leagueId,
+        p_week_id: matchingWeek.id
+      })
+
+    if (error) {
+      console.error("check_league_start_week:", error)
+      setStartWeekCheck(null)
+      return
+    }
+
+    setStartWeekCheck(result?.[0] ?? null)
   }
 
   // ============================================================
@@ -401,11 +448,13 @@ export default function LeagueAdminPage() {
             <br />
             1. Scegli il nome della tua lega
             <br />
-            2. Scegli la data d'inizio
+            2. Scegli i campionati da usare
             <br />
-            3. Invita i tuoi amici a partecipare
+            3. Scegli la data d'inizio
             <br />
-            4. Apri ufficialmente la lega
+            4. Invita i tuoi amici a partecipare
+            <br />
+            5. Apri ufficialmente la lega
           </div>
         </div>
 
@@ -599,22 +648,18 @@ export default function LeagueAdminPage() {
                   <strong>
                     Data d'inizio
                   </strong>
+
                   <div className="text-sm opacity-70">
                     {formatDate(league.start_date)}
                   </div>
                 </div>
 
                 {isDraft && (
-
                   <button
                     className="playBtn"
                     onClick={() => {
 
                       setEditingWeek(true)
-
-                      // Se la data salvata coincide con una delle
-                      // cinque settimane disponibili, la manteniamo
-                      // selezionata.
 
                       const matchingWeek =
                         weeks.find(
@@ -637,19 +682,29 @@ export default function LeagueAdminPage() {
               </div>
             </div>
 
-
             {/* --------------------------------------------------
                 Aviso si la fecha guardada ya ha pasado
             -------------------------------------------------- */}
 
             {new Date(league.start_date).getTime() <= Date.now() && (
-
               <div className="text-sm opacity-70">
                 La settimana di inizio selezionata è già trascorsa.
                 Seleziona una nuova settimana prima di aprire la lega.
               </div>
-
             )}
+
+            {/* --------------------------------------------------
+                Aviso si no hay partidos disponibles
+            -------------------------------------------------- */}
+
+            {startWeekCheck &&
+              !startWeekCheck.has_matches && (
+                <div className="text-sm opacity-70">
+                  ⚠️ Non ci sono partite disponibili per la settimana
+                  d'inizio selezionata. Prova a selezionare un'altra settimana.
+                </div>
+            )}
+
           </div>
         )}
 
@@ -997,6 +1052,7 @@ export default function LeagueAdminPage() {
                 <div className="text-sm opacity-70">
                   Quando sei pronto, fai click sul bottone, e inizia a giocare!<br />
                   ✅ Hai scelto il nome della lega?<br />
+                  ✅ Hai scelto i campionati?<br />
                   ✅ Hai selezionato la settimana d'inizio?<br />
                   ✅ Hai invitato tutti i tuoi amici?<br />
                 </div>
