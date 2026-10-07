@@ -14,6 +14,7 @@ export default function MyApp() {
     const [password,setPassword]=useState("")
     const [confirmPw, setConfirmPW]=useState("")
     const [nickname,setNickname]=useState("")
+    const [checkPrivacy, setCheckPrivacy] = useState(false)
 
     const signup = async (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,6 +27,7 @@ export default function MyApp() {
         if (!nicknameValue) return alert("Nickname is required");
         if (password.length < 8 || password.length > 20) return alert("Password must be between 8 and 20 characters long");
         if (password !== confirmPw) return alert("Passwords don't match");
+        if (!checkPrivacy) return alert("You must read and accept the Privacy Policy");
 
         const { error } = await supabase.auth.signUp({ 
             email: emailValue, 
@@ -61,6 +63,21 @@ export default function MyApp() {
                     <br />
                     <input className="contentSignup" type="password" autoComplete="new-password" placeholder="Retype password" onChange={e=>setConfirmPW(e.target.value)} />
                     <br />
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={checkPrivacy}
+                            onChange={e => setCheckPrivacy(e.target.checked)}
+                        />
+                        {" "}
+                        Ho letto l'informativa sulla privacy: {" "}
+                        <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                            Privacy Policy
+                        </a>
+                    </label>
+
+                    <br />
+                    <br />                    
                     <button className="playBtn" type="submit">Signup</button>
                 </form>
                 </div>
