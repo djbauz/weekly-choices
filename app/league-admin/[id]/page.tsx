@@ -250,7 +250,7 @@ export default function LeagueAdminPage() {
     }
 
     setStartWeekCheck(result?.[0] ?? null)
-    console.log("log matchingWeek: ", matchingWeek)
+    console.log("log matchingWeek: ", data)
   }
 
   // ============================================================
