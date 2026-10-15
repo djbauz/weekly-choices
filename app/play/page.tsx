@@ -271,9 +271,16 @@ export default function PlayPage() {
                       e.stopPropagation()
                       openDashboard(league.league_id)
                     }}
+                    disabled={league.league_status === "draft"}
+                    title={
+                      league.league_status === "draft"
+                        ? "Le partite non sono ancora disponibili"
+                        : ""
+                    }
                   >
                     Partite
                   </button>
+
 
                   &nbsp;&nbsp;&nbsp;&nbsp;
 

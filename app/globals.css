@@ -257,6 +257,13 @@ a {
   margin: 10px 0;
 }
 
+.playBtn:disabled {
+  background-color: #9ca3af;
+  color: #e5e7eb;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .openLeagueBtn {
   font-size: 1.2rem;
   padding: 14px 45px;
