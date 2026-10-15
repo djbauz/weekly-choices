@@ -30,6 +30,16 @@ export default function PlayPage() {
     router.push(`/dashboard/${leagueId}`)
   }
 
+  function formatDate(dateString: string) {
+    if (!dateString) return "—";
+
+    return new Date(dateString).toLocaleDateString("it-IT", {
+      timeZone: "Europe/Rome",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  }
 
   async function loadData() {
 
@@ -243,27 +253,26 @@ export default function PlayPage() {
               {expandedLeague === league.league_id && (
 
                 <>
-
+                  {league.league_status === "draft" && (
+                    <div className="leagueStartDate">
+                      Data d'inizio: {formatDate(league.league_start)}
+                    </div>
+                  )}
                   <div>
                     Round: {league.rounds_count}
                   </div>
-
                   <div>
                     Giocatori: {league.total_players}
                   </div>
-
                   <div>
                     Attivi: {league.active_players}
                   </div>
-
                   <div>
                     Eliminati: {league.eliminated_players}
                   </div>
-
                   <div>
                     Status: {league.user_status}
                   </div>
-
 
                   <button
                     className="playBtn"
