@@ -148,55 +148,140 @@ export default function MatrixPage({ params }: any) {
           padding: 24px;
         }
 
+        .container {
+          padding: 16px;
+          max-width: 100%;
+        }
+
         h1 {
-          font-size: 28px;
-          margin-bottom: 8px;
+          font-size: 24px;
+          margin: 0 0 4px;
         }
 
         h2 {
-          margin-bottom: 20px;
+          font-size: 17px;
+          font-weight: 500;
+          margin: 0 0 16px;
           color: #666;
         }
 
         .tableWrapper {
+          width: 100%;
           overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          border: 1px solid #e5e7eb;
+          border-radius: 10px;
+          background: white;
         }
 
         table {
-          border-collapse: collapse;
-          min-width: 400px;
+          border-collapse: separate;
+          border-spacing: 0;
+          min-width: max-content;
+          width: 100%;
+          font-size: 13px;
         }
 
         th, td {
-          border: 1px solid #ddd;
-          padding: 8px 12px;
+          min-width: 42px;
+          padding: 5px 7px;
           text-align: center;
+          white-space: nowrap;
+          border-right: 1px solid #e5e7eb;
+          border-bottom: 1px solid #e5e7eb;
         }
 
         th {
-          background: #f5f5f5;
-          color: #000000;
+          position: sticky;
+          top: 0;
+          z-index: 2;
+          background: #f3f4f6;
+          color: #374151;
+          font-weight: 700;
+          padding-top: 8px;
+          padding-bottom: 8px;
         }
 
-        .player {
-          font-weight: bold;
+        th:first-child {
+          position: sticky;
+          left: 0;
+          z-index: 4;
           text-align: left;
+          min-width: 100px;
+        }
+
+        td.player {
+          position: sticky;
+          left: 0;
+          z-index: 1;
+          text-align: left;
+          font-weight: 600;
+          color: #111827;
+          background: white;
+          min-width: 100px;
+          max-width: 140px;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         .cellRed {
-          background: #ffcccc;
-          color: red;
+          background: #fee2e2;
+          color: #b91c1c;
         }
 
         .cellGreen {
-          background: #d2f7c5;
-          color: green;
+          background: #dcfce7;
+          color: #166534;
         }
 
         .cellPending {
-          background: black;
+          background: #374151;
           color: white;
         }
+
+        tbody tr:last-child td {
+          border-bottom: 0;
+        }
+
+        th:last-child,
+        td:last-child {
+          border-right: 0;
+        }
+
+        @media (max-width: 600px) {
+          .container {
+            padding: 10px 6px;
+          }
+
+          h1 {
+            font-size: 22px;
+          }
+
+          h2 {
+            font-size: 15px;
+            margin-bottom: 12px;
+          }
+
+          table {
+            font-size: 12px;
+          }
+
+          th, td {
+            padding: 4px 5px;
+          }
+
+          th:first-child,
+          td.player {
+            min-width: 88px;
+            max-width: 110px;
+          }
+
+          th {
+            padding-top: 7px;
+            padding-bottom: 7px;
+          }
+        }
+
       `}</style>
 
     </div>
