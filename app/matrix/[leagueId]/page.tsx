@@ -248,6 +248,8 @@ export default function MatrixPage({ params }: any) {
           border-right: 0;
         }
 
+
+        /* Estilos específicos para móviles */
         @media (max-width: 600px) {
           .container {
             padding: 10px 6px;
@@ -279,6 +281,18 @@ export default function MatrixPage({ params }: any) {
           th {
             padding-top: 7px;
             padding-bottom: 7px;
+          }
+        }
+
+        /* Estilos específicos para ordenador y pantallas grandes */
+        @media (min-width: 601px) {
+          .tableWrapper {
+            width: fit-content;
+            max-width: 100%;
+          }
+
+          table {
+            width: auto;
           }
         }
 
